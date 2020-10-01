@@ -11,7 +11,7 @@
         <!--Map View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MapViewController" customModule="ChemicalFacilitiesAroundMe" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="showMapView" id="BYZ-38-t0r" customClass="MapViewController" customModule="ChemicalFacilitiesAroundMe" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,6 +40,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="Ov0-mP-nA3" id="abZ-8i-kdx"/>
+                        <segue destination="mc0-y0-NNA" kind="show" id="mlD-v7-bow"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -21,6 +21,7 @@ class MapViewController: UIViewController {
     var selectedPin: MKPlacemark?
     var compassButton: MKCompassButton?
     let myLocationButton = UIButton(frame: CGRect(x: 351, y: 187, width: 43, height: 41))
+    var facilityList: [FacilityItem]?
     
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -99,6 +100,20 @@ class MapViewController: UIViewController {
     
     @IBAction func menuPressed(_ sender: UIBarButtonItem) {
         
+    }
+    
+    func fetchFacility() {
+        do {
+            let request = FacilityItem.fetchRequest() as NSFetchRequest<FacilityItem>
+            
+            self.facilityList = try context.fetch(request)
+            
+            DispatchQueue.main.async {
+                
+            }
+        } catch {
+            
+        }
     }
 }
 
