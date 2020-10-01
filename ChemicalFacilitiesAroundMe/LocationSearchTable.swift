@@ -15,6 +15,7 @@ class LocationSearchTable: UITableViewController {
     var searchBar: UISearchBar? = nil
 }
 
+//MARK: - UISearchResultsUpdating
 extension LocationSearchTable: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let mapView = mapView,
@@ -36,6 +37,7 @@ extension LocationSearchTable: UISearchResultsUpdating {
     }
 }
 
+//MARK: - UIDataView Methods
 extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return matchingItems.count
@@ -50,6 +52,8 @@ extension LocationSearchTable {
         return cell
     }
 }
+
+//MARK: - UIDataSource Methods
 extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark

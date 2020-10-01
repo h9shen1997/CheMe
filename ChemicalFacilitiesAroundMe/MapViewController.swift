@@ -77,14 +77,24 @@ class MapViewController: UIViewController {
         mapView.addSubview(myLocationButton)
     }
     
+    //MARK: - Button Methods
     @objc func myLocationButtonPressed() {
         locationManager.startUpdatingLocation()
     }
     
-    func calculateHazardScore() {
+    @IBAction func refreshPressed(_ sender: UIBarButtonItem) {
+        mapView.removeAnnotations(mapView.annotations)
+    }
+    
+    @IBAction func menuPressed(_ sender: UIBarButtonItem) {
         
     }
     
+    //MARK: - Calculate Hazard Score Based on Distance
+    func calculateHazardScore() {
+        
+    }
+    //MARK: - Fetch Facility Methods
     func saveFacility() {
         do {
             try context.save()
@@ -92,16 +102,7 @@ class MapViewController: UIViewController {
             print("Error saving context \(error)")
         }
     }
-    
-    @IBAction func refreshPressed(_ sender: UIBarButtonItem) {
-        mapView.removeAnnotations(mapView.annotations)
-    }
-    
-    
-    @IBAction func menuPressed(_ sender: UIBarButtonItem) {
-        
-    }
-    
+
     func fetchFacility() {
         do {
             let request = FacilityItem.fetchRequest() as NSFetchRequest<FacilityItem>
@@ -117,6 +118,8 @@ class MapViewController: UIViewController {
     }
 }
 
+
+//MARK: - CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -128,7 +131,6 @@ extension MapViewController: CLLocationManagerDelegate {
                 self.locationManager.stopUpdatingLocation()
             }
         }
-        
     }
     
     // Handle authorization for the location manager.
@@ -167,6 +169,7 @@ extension MapViewController: CLLocationManagerDelegate {
     }
 }
 
+//MARK: - HandleMapSearch Protocol
 extension MapViewController: HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark) {
         // cache the pin

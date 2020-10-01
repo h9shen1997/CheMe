@@ -89,10 +89,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func removeData() {
         let context = persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FacilityItem")
+        //let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FacilityItem")
         
         do {
-            let facilityItems = try context.execute(fetchRequest) as! [FacilityItem]
+            let request = FacilityItem.fetchRequest() as NSFetchRequest<FacilityItem>
+            let facilityItems = try context.fetch(request)
             for facilityItem in facilityItems {
                 context.delete(facilityItem)
             }
@@ -148,12 +149,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             fatalError()
         }
-        
         return items
     }
 
     // MARK: - Core Data Saving support
-
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {

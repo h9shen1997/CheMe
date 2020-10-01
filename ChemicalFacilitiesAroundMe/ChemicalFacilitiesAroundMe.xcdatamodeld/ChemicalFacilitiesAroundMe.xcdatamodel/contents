@@ -7,13 +7,12 @@
         <attribute name="facilityDescription" attributeType="String" defaultValueString=""/>
         <attribute name="facilityName" attributeType="String" defaultValueString=""/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="location" optional="YES" attributeType="Transformable" customClassName="CLLocation"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="operationStatus" attributeType="String" defaultValueString=""/>
         <attribute name="streetAddress" attributeType="String" defaultValueString=""/>
         <attribute name="zipCode" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="FacilityItem" positionX="-63" positionY="-18" width="128" height="208"/>
+        <element name="FacilityItem" positionX="-63" positionY="-18" width="128" height="193"/>
     </elements>
 </model>

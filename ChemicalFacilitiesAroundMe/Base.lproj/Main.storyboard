@@ -40,7 +40,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="Ov0-mP-nA3" id="abZ-8i-kdx"/>
-                        <segue destination="mc0-y0-NNA" kind="show" id="mlD-v7-bow"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
