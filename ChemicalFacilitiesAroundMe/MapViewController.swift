@@ -75,6 +75,8 @@ class MapViewController: UIViewController {
         myLocationButton.tintColor = UIColor.red
         myLocationButton.addTarget(self, action: #selector(myLocationButtonPressed), for: .touchUpInside)
         mapView.addSubview(myLocationButton)
+        fetchFacility()
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     //MARK: - Button Methods
@@ -113,7 +115,7 @@ class MapViewController: UIViewController {
                 
             }
         } catch {
-            
+            fatalError()
         }
     }
 }

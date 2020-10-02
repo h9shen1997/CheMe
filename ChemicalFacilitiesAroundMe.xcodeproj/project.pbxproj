@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5541C48325244A210037C4CE /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 5541C48225244A210037C4CE /* Facility.csv */; };
+		55C1BB262527EF8D0056DA19 /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 55C1BB252527EF8D0056DA19 /* Facility.csv */; };
 		55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450C25227C7500F876C3 /* AppDelegate.swift */; };
 		55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450E25227C7500F876C3 /* SceneDelegate.swift */; };
 		55F5451125227C7500F876C3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5451025227C7500F876C3 /* MapViewController.swift */; };
@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5541C48225244A210037C4CE /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
+		55C1BB252527EF8D0056DA19 /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
 		55F5450925227C7500F876C3 /* ChemicalFacilitiesAroundMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChemicalFacilitiesAroundMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F5450C25227C7500F876C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55F5450E25227C7500F876C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 				55F5451825227C7900F876C3 /* Assets.xcassets */,
 				55F5451A25227C7900F876C3 /* LaunchScreen.storyboard */,
 				55F5451D25227C7900F876C3 /* Info.plist */,
-				5541C48225244A210037C4CE /* Facility.csv */,
+				55C1BB252527EF8D0056DA19 /* Facility.csv */,
 				55F5451525227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld */,
 			);
 			path = ChemicalFacilitiesAroundMe;
@@ -136,7 +136,7 @@
 				55F5451C25227C7900F876C3 /* LaunchScreen.storyboard in Resources */,
 				55F5451925227C7900F876C3 /* Assets.xcassets in Resources */,
 				55F5451425227C7500F876C3 /* Main.storyboard in Resources */,
-				5541C48325244A210037C4CE /* Facility.csv in Resources */,
+				55C1BB262527EF8D0056DA19 /* Facility.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

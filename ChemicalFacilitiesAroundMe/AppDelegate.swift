@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         // Override point for customization after application launch.
-        print("this line is run")
+        preloadData()
         return true
     }
 
@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
-        print("this line is run")
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
@@ -30,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-        print("this line is run")
     }
     
     // MARK: - Core Data stack
@@ -58,11 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let userDefaults = UserDefaults.standard
         if userDefaults.bool(forKey: preloadDataKey) == false {
             if let urlPath = Bundle.main.url(forResource: "Facility", withExtension: "csv") {
-                if let items = processData(contentsOfURL: urlPath, encoding: String.Encoding.utf8) {
+                if let items = processData(contentsOfURL: urlPath, encoding: .utf8) {
+                    print("Preloading method is running")
                     for item in items {
-                        let facilityItem = NSEntityDescription.insertNewObject(forEntityName: "FacilityItem", into: context) as! FacilityItem
-                        
-                        
+                        let facilityItem = FacilityItem(context: context)
                         facilityItem.city = item.city
                         facilityItem.classification = item.classification
                         facilityItem.county = item.county
@@ -73,84 +70,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         facilityItem.operationStatus = item.operationStatus
                         facilityItem.streetAddress = item.streetAddress
                         facilityItem.zipCode = item.zipCode
-                        
                     }
                 }
             }
             userDefaults.setValue(true, forKey: preloadDataKey)
-            do {
-                try context.save()
-            } catch {
-                fatalError()
-            }
-            
+            self.saveContext()
         }
     }
     
     func removeData() {
         let context = persistentContainer.viewContext
-        //let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FacilityItem")
-        
         do {
             let request = FacilityItem.fetchRequest() as NSFetchRequest<FacilityItem>
             let facilityItems = try context.fetch(request)
             for facilityItem in facilityItems {
                 context.delete(facilityItem)
             }
+            self.saveContext()
         } catch {
-            print("Failed to retrieve records")
+            print("Failed to delete all preloaded facilities, \(error.localizedDescription)")
         }
     }
     
     func processData(contentsOfURL: URL, encoding: String.Encoding) -> [(facilityName: String, streetAddress: String, city: String, zipCode: String, latitude: Double, longitude: Double, county: String, operationStatus: String, classification: String, facilityDescription: String)]? {
-
-        let delimiter = ","
-        var items: [(facilityName: String, streetAddress: String, city: String, zipCode: String, latitude: Double, longitude: Double, county: String, operationStatus: String, classification: String, facilityDescription: String)]
-        do {
-            let content = try String(contentsOf: contentsOfURL, encoding: encoding)
-            items = []
-            let lines: [String] = content.components(separatedBy: .newlines) as [String]
-            
-            for line in lines {
-                var values: [String] = []
-                if line != "" {
-                    if line.range(of: "\"") != nil {
-                        var textToScan: String = line
-                        var value = ""
-                        var textScanner: Scanner = Scanner(string: textToScan)
-                        while textScanner.string != "" {
-                            if (textScanner.string as NSString).substring(to: 1) == "\"" {
-                                textScanner.currentIndex = textScanner.string.index(after: textScanner.currentIndex)
-                                value += textScanner.scanUpToString("\"")!
-                                textScanner.currentIndex = textScanner.string.index(after: textScanner.currentIndex)
-                            } else {
-                                value += textScanner.scanUpToString(delimiter)!
-                            }
-                            values.append(value)
-                            
-                            if !textScanner.isAtEnd {
-                                textToScan = String((textScanner.string)[textScanner.currentIndex...])
-                            } else {
-                                textToScan = ""
-                            }
-                            textScanner = Scanner(string: textToScan)
-                        }
-                        
-                    } else {
+        
+            let delimiter = ","
+            var items = [(facilityName: String, streetAddress: String, city: String, zipCode: String, latitude: Double, longitude: Double, county: String, operationStatus: String, classification: String, facilityDescription: String)]()
+            do {
+                removeData()
+                let content = try String(contentsOf: contentsOfURL, encoding: encoding)
+                let lines = content.components(separatedBy: .newlines)
+                for line in lines {
+                    var values = [String]()
+                    if line != "" {
                         values = line.components(separatedBy: delimiter)
                     }
-                    
-                    let item = (facilityName: values[0], streetAddress: values[1], city: values[2], zipCode: values[3],
-                                latitude: Double(values[4])!, longitude: Double(values[5])!, county: values[6], operationStatus: values[7],
-                                classification: values[8], facilityDescription: values[9])
+                    let item = (facilityName: values[0], streetAddress: values[1], city: values[2], zipCode: values[3], latitude: Double(values[4])!, longitude: Double(values[5])!, county: values[6], operationStatus: values[7], classification: values[8], facilityDescription: values[9])
                     items.append(item)
                 }
+            } catch {
+                fatalError("Failed to remove the data and preload the data, \(error.localizedDescription)")
             }
-        } catch {
-            fatalError()
+            return items
         }
-        return items
-    }
 
     // MARK: - Core Data Saving support
     func saveContext () {
