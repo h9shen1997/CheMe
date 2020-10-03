@@ -43,6 +43,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		55C1BB2825286A400056DA19 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				55F5451525227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		55C1BB2E25286A720056DA19 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				55F545252522839700F876C3 /* LocationSearchTable.swift */,
+				55F5451025227C7500F876C3 /* MapViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		55C1BB3025286AB20056DA19 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				55F5451A25227C7900F876C3 /* LaunchScreen.storyboard */,
+				55F5451225227C7500F876C3 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		55F5450025227C7500F876C3 = {
 			isa = PBXGroup;
 			children = (
@@ -64,14 +90,12 @@
 			children = (
 				55F5450C25227C7500F876C3 /* AppDelegate.swift */,
 				55F5450E25227C7500F876C3 /* SceneDelegate.swift */,
-				55F5451025227C7500F876C3 /* MapViewController.swift */,
-				55F545252522839700F876C3 /* LocationSearchTable.swift */,
-				55F5451225227C7500F876C3 /* Main.storyboard */,
+				55C1BB2825286A400056DA19 /* Model */,
+				55C1BB3025286AB20056DA19 /* View */,
+				55C1BB2E25286A720056DA19 /* Controller */,
 				55F5451825227C7900F876C3 /* Assets.xcassets */,
-				55F5451A25227C7900F876C3 /* LaunchScreen.storyboard */,
-				55F5451D25227C7900F876C3 /* Info.plist */,
 				55C1BB252527EF8D0056DA19 /* Facility.csv */,
-				55F5451525227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld */,
+				55F5451D25227C7900F876C3 /* Info.plist */,
 			);
 			path = ChemicalFacilitiesAroundMe;
 			sourceTree = "<group>";

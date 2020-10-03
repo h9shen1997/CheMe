@@ -11,7 +11,7 @@
         <!--Map View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="showMapView" id="BYZ-38-t0r" customClass="MapViewController" customModule="ChemicalFacilitiesAroundMe" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="showMapView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="MapViewController" customModule="ChemicalFacilitiesAroundMe" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,6 +20,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZW4-Ae-aiu">
+                                <rect key="frame" x="107" y="720" width="200" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -49,7 +53,7 @@
         <!--Location Search Table-->
         <scene sceneID="4cs-9l-0Nc">
             <objects>
-                <tableViewController storyboardIdentifier="locationSearchTable" id="mc0-y0-NNA" customClass="LocationSearchTable" customModule="ChemicalFacilitiesAroundMe" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="locationSearchTable" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mc0-y0-NNA" customClass="LocationSearchTable" customModule="ChemicalFacilitiesAroundMe" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="J8B-2L-7Rg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
