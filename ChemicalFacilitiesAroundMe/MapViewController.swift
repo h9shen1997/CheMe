@@ -21,7 +21,8 @@ class MapViewController: UIViewController {
     var selectedPin: MKPlacemark?
     var compassButton: MKCompassButton?
     let myLocationButton = UIButton(frame: CGRect(x: 351, y: 187, width: 43, height: 41))
-    var facilityList: [FacilityItem]?
+    var facilityList = [FacilityItem]()
+    var distanceList = [(FacilityItem, CLLocation, Double)]()
     
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -76,7 +77,6 @@ class MapViewController: UIViewController {
         myLocationButton.addTarget(self, action: #selector(myLocationButtonPressed), for: .touchUpInside)
         mapView.addSubview(myLocationButton)
         fetchFacility()
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     //MARK: - Button Methods
@@ -92,30 +92,41 @@ class MapViewController: UIViewController {
         
     }
     
-    //MARK: - Calculate Hazard Score Based on Distance
+    //MARK: - Calculate Facility Related Information
     func calculateHazardScore() {
         
     }
-    //MARK: - Fetch Facility Methods
-    func saveFacility() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context \(error)")
+    
+    func calculateLocationDistance(with placemark: MKPlacemark) {
+        let selectedLocation = CLLocation(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
+        distanceList.removeAll()
+        for facility in facilityList {
+            let facilityLocation = CLLocation(latitude: facility.latitude, longitude: facility.longitude)
+            let distance = Double(selectedLocation.distance(from: facilityLocation))
+            print(distance)
+            distanceList.append((facility, facilityLocation, distance))
         }
+        
     }
-
+    
+    func showFacilitiesWithin(within distance: Double) -> [(FacilityItem, CLLocation, Double)]? {
+        let sortedDistanceList = distanceList.sorted(by: { (lhs, rhs) -> Bool in
+            lhs.2 <= rhs.2
+        })
+        let distanceInMeter = distance * 1069.344
+        let filteredList = sortedDistanceList.filter({ (facility, location, distance) -> Bool in
+            distance < distanceInMeter
+        })
+        return filteredList
+    }
+    
+    //MARK: - Fetch Facility Methods
     func fetchFacility() {
         do {
             let request = FacilityItem.fetchRequest() as NSFetchRequest<FacilityItem>
-            
             self.facilityList = try context.fetch(request)
-            
-            DispatchQueue.main.async {
-                
-            }
         } catch {
-            fatalError()
+            fatalError("Failed to fetch facility, \(error.localizedDescription)")
         }
     }
 }
@@ -177,8 +188,24 @@ extension MapViewController: HandleMapSearch {
         // cache the pin
         selectedPin = placemark
         
+        // Calculate the facilities around the selected location
+        calculateLocationDistance(with: placemark)
+        let surroundingFacility = showFacilitiesWithin(within: 2)
+        
         // clear existing pin
         mapView.removeAnnotations(mapView.annotations)
+        
+        var facilityPointer = [MKPointAnnotation]()
+        if let nearbyFacilityList = surroundingFacility {
+            for facility in nearbyFacilityList {
+                print(String(facility.0.facilityName ?? ""))
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = facility.1.coordinate
+                annotation.title = facility.0.facilityName
+                annotation.subtitle = "\(String(facility.0.county ?? "")), \(String(facility.0.city ?? ""))"
+                facilityPointer.append(annotation)
+            }
+        }
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
@@ -186,6 +213,7 @@ extension MapViewController: HandleMapSearch {
             annotation.subtitle = "\(city) \(state)"
         }
         mapView.addAnnotation(annotation)
+        mapView.addAnnotations(facilityPointer)
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         mapView.setRegion(region, animated: true)
