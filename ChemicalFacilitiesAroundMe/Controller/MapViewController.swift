@@ -21,17 +21,15 @@ class MapViewController: UIViewController {
     var selectedPin: MKPlacemark?
     var compassButton: MKCompassButton?
     let myLocationButton = UIButton(frame: CGRect(x: 351, y: 187, width: 43, height: 41))
-    let milesStepper = UIStepper(frame: CGRect(x: 160, y: 790, width: 0, height: 0))
-    let stack = UIStackView(frame: CGRect(x: 107, y: 720, width: 200, height: 50))
-    let mileNumberTextField = UITextField()
-    let mileTextField = UITextField()
     var facilityList = [FacilityItem]()
     var distanceList = [(FacilityItem, CLLocation, Double)]()
-    
+    var facilityPointer: [MKPointAnnotation]?
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var shouldAllowStepper = true
     
     @IBOutlet weak var mapView: MKMapView!
-    //@IBOutlet weak var myLocationButton: UIButton!
+    @IBOutlet weak var mileTextField: UITextField!
+    @IBOutlet weak var mileStepper: UIStepper!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,16 +82,13 @@ class MapViewController: UIViewController {
         myLocationButton.tintColor = UIColor.red
         myLocationButton.addTarget(self, action: #selector(myLocationButtonPressed), for: .touchUpInside)
         mapView.addSubview(myLocationButton)
-        
-        // Create the miles stepper to change the purview around the searched location
-        milesStepper.autorepeat = false
-        milesStepper.isContinuous = true
-        milesStepper.minimumValue = 1
-        milesStepper.maximumValue = 10
-        milesStepper.stepValue = 1
-        milesStepper.value = 1
-        mapView.addSubview(milesStepper)
-        
+
+        // Define the default value of the mileTextField
+        if mileStepper.value == 1.0 {
+            mileTextField.text = String(Int(mileStepper.value)) + " mile from the searched location"
+        } else {
+            mileTextField.text = String(Int(mileStepper.value)) + " miles from the searched location"
+        }
         
         // Fetch all the preloaded facility data
         fetchFacility()
@@ -106,17 +101,27 @@ class MapViewController: UIViewController {
     
     @IBAction func refreshPressed(_ sender: UIBarButtonItem) {
         mapView.removeAnnotations(mapView.annotations)
+        shouldAllowStepper = false
     }
     
     @IBAction func menuPressed(_ sender: UIBarButtonItem) {
         
     }
     
-    //MARK: - Calculate Facility Related Information
-    func calculateHazardScore() {
-        
+    @IBAction func stepperPressed(_ sender: UIStepper) {
+        if mileStepper.value == 1.0 {
+            mileTextField.text = String(Int(sender.value)) + " mile from the searched location"
+        } else {
+            mileTextField.text = String(Int(sender.value)) + " miles from the searched location"
+        }
+        if shouldAllowStepper {
+            if let pin = selectedPin {
+                createNewSurroundingAnnotations(with: pin, miles: mileStepper.value)
+            }
+        }
     }
     
+    //MARK: - Calculate Facility Related Information
     func calculateLocationDistance(with placemark: MKPlacemark) {
         let selectedLocation = CLLocation(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
         distanceList.removeAll()
@@ -131,7 +136,7 @@ class MapViewController: UIViewController {
         let sortedDistanceList = distanceList.sorted(by: { (lhs, rhs) -> Bool in
             lhs.2 <= rhs.2
         })
-        let distanceInMeter = distance * 1069.344
+        let distanceInMeter = distance * 1609.34
         let filteredList = sortedDistanceList.filter({ (facility, location, distance) -> Bool in
             distance <= distanceInMeter
         })
@@ -203,37 +208,52 @@ extension MapViewController: CLLocationManagerDelegate {
 //MARK: - HandleMapSearch Protocol
 extension MapViewController: HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark) {
-        // cache the pin
+        shouldAllowStepper = true
         selectedPin = placemark
+        self.mapView.removeAnnotations(self.mapView.annotations)
         
-        // Calculate the facilities around the selected location
-        calculateLocationDistance(with: placemark)
-        let surroundingFacility = showFacilitiesWithin(within: milesStepper.value)
-        
-        // clear existing pin
-        mapView.removeAnnotations(mapView.annotations)
-        
-        var facilityPointer = [MKPointAnnotation]()
-        if let nearbyFacilityList = surroundingFacility {
-            for facility in nearbyFacilityList {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = facility.1.coordinate
-                annotation.title = facility.0.facilityName
-                annotation.subtitle = "\(String(facility.0.county ?? "")), \(String(facility.0.city ?? ""))"
-                facilityPointer.append(annotation)
-            }
-        }
+        createNewSurroundingAnnotations(with: placemark, miles: mileStepper.value)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
         if let city = placemark.locality, let state = placemark.administrativeArea {
             annotation.subtitle = "\(city) \(state)"
         }
-        mapView.addAnnotation(annotation)
-        mapView.addAnnotations(facilityPointer)
-        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
-        mapView.setRegion(region, animated: true)
+        
+        DispatchQueue.main.async {
+            self.mapView.addAnnotation(annotation)
+            self.mapView.setRegion(region, animated: true)
+        }
+    }
+}
+
+//MARK: - Update Surrounding Facilities Pinpoint
+extension MapViewController {
+    func createNewSurroundingAnnotations(with placemark: MKPlacemark, miles: Double) {
+        
+        calculateLocationDistance(with: placemark)
+        let surroundingFacility = showFacilitiesWithin(within: miles)
+        var facilityPointerList = [MKPointAnnotation]()
+        if facilityPointer != nil {
+            mapView.removeAnnotations(facilityPointer!)
+            facilityPointer!.removeAll()
+        }
+        if let nearbyFacility = surroundingFacility {
+            for facility in nearbyFacility {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = facility.1.coordinate
+                annotation.title = facility.0.facilityName
+                annotation.subtitle = "\(String(facility.0.county ?? "")), \(String(facility.0.city ?? ""))"
+                facilityPointerList.append(annotation)
+            }
+        }
+        DispatchQueue.main.async {
+            self.mapView.addAnnotations(facilityPointerList)
+        }
+        
+        facilityPointer = facilityPointerList
     }
 }
 
