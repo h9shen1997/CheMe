@@ -9,10 +9,10 @@ import UIKit
 import MapKit
 
 class LocationSearchTable: UITableViewController {
-    var matchingItems: [MKMapItem] = []
-    var mapView: MKMapView? = nil
-    var handleMapSearchDelegate: HandleMapSearch? = nil
-    var searchBar: UISearchBar? = nil
+    var matchingItems = [MKMapItem]()
+    var mapView: MKMapView?
+    var handleMapSearchDelegate: HandleMapSearch?
+    var searchBar: UISearchBar?
 }
 
 //MARK: - UISearchResultsUpdating
@@ -58,7 +58,7 @@ extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
-        searchBar?.text = ""
+        searchBar?.text = ChemFacilityConstants.searchBarDefaultText
         dismiss(animated: true, completion: nil)
     }
 }

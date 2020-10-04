@@ -14,19 +14,17 @@ protocol HandleMapSearch {
 }
 
 class MapViewController: UIViewController {
-
-    var locationManager: CLLocationManager!
-    var currentLocation: CLLocation?
-    var resultSearchController: UISearchController?
-    var selectedPin: MKPlacemark?
-    var compassButton: MKCompassButton?
-    let myLocationButton = UIButton(frame: CGRect(x: 351, y: 187, width: 43, height: 41))
-    var facilityList = [FacilityItem]()
-    var distanceList = [(FacilityItem, CLLocation, Double)]()
-    var facilityPointer: [MKPointAnnotation]?
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var shouldAllowStepper = true
-    
+    private var locationManager: CLLocationManager!
+    private var currentLocation: CLLocation?
+    private var resultSearchController: UISearchController?
+    private var selectedPin: MKPlacemark?
+    private var compassButton: MKCompassButton?
+    private var facilityList = [FacilityItem]()
+    private var distanceList = [(FacilityItem, CLLocation, Double)]()
+    private var facilityPointer: [MKPointAnnotation]?
+    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private let myLocationButton = UIButton(frame: CGRect(x: ChemFacilityConstants.myLocationFrameX, y: ChemFacilityConstants.myLocationFrameY, width: ChemFacilityConstants.myLocationFrameWidth, height: ChemFacilityConstants.myLocationFrameHeight))
+    private var shouldAllowStepper = true
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mileTextField: UITextField!
     @IBOutlet weak var mileStepper: UIStepper!
@@ -43,7 +41,6 @@ class MapViewController: UIViewController {
         
         // Initialize the search display table
         let locationSearchTable = storyboard?.instantiateViewController(identifier: "locationSearchTable") as? LocationSearchTable
-
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable
         resultSearchController?.hidesNavigationBarDuringPresentation = false
@@ -52,15 +49,11 @@ class MapViewController: UIViewController {
         // Create a search bar with placeholder
         let searchBar = resultSearchController!.searchBar
         searchBar.autocapitalizationType = .words
-        searchBar.placeholder = "Type an address to search..."
+        searchBar.placeholder = ChemFacilityConstants.searchBarPlaceholder
         navigationItem.searchController = resultSearchController
         navigationItem.hidesSearchBarWhenScrolling = false
-        
-        // Create the title of the app
-        navigationItem.title = "Chemical Facility Around Me"
-        
+        navigationItem.title = ChemFacilityConstants.navigationTitle
         definesPresentationContext = true
-        
         locationSearchTable?.mapView = mapView
         locationSearchTable?.handleMapSearchDelegate = self
         
@@ -71,8 +64,8 @@ class MapViewController: UIViewController {
             mapView.addSubview(compass)
             compass.compassVisibility = .visible
             compass.translatesAutoresizingMaskIntoConstraints = false
-            compass.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 240).isActive = true
-            compass.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -25).isActive = true
+            compass.topAnchor.constraint(equalTo: mapView.topAnchor, constant: ChemFacilityConstants.compassTopAnchor).isActive = true
+            compass.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: ChemFacilityConstants.compassTrailingAnchor).isActive = true
         }
         
         // Create the myLocation button
@@ -84,17 +77,15 @@ class MapViewController: UIViewController {
         mapView.addSubview(myLocationButton)
 
         // Define the default value of the mileTextField
-        if mileStepper.value == 1.0 {
-            mileTextField.text = String(Int(mileStepper.value)) + " mile from the searched location"
-        } else {
-            mileTextField.text = String(Int(mileStepper.value)) + " miles from the searched location"
-        }
+        updateStepperDisplay(mileStepper)
         
         // Fetch all the preloaded facility data
         fetchFacility()
     }
-    
-    //MARK: - Button Methods
+}
+
+//MARK: - UI Methods Arrangement
+extension MapViewController {
     @objc func myLocationButtonPressed() {
         locationManager.startUpdatingLocation()
     }
@@ -109,19 +100,28 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func stepperPressed(_ sender: UIStepper) {
-        if mileStepper.value == 1.0 {
-            mileTextField.text = String(Int(sender.value)) + " mile from the searched location"
-        } else {
-            mileTextField.text = String(Int(sender.value)) + " miles from the searched location"
-        }
+        updateStepperDisplay(sender)
         if shouldAllowStepper {
             if let pin = selectedPin {
-                createNewSurroundingAnnotations(with: pin, miles: mileStepper.value)
+                createNewSurroundingAnnotations(with: pin, miles: sender.value)
             }
         }
     }
+}
+
+//MARK: - Facility Manipulation methods
+extension MapViewController {
+    // Fetch facility
+    func fetchFacility() {
+        do {
+            let request = FacilityItem.fetchRequest() as NSFetchRequest<FacilityItem>
+            self.facilityList = try context.fetch(request)
+        } catch {
+            fatalError("Failed to fetch facility, \(error.localizedDescription)")
+        }
+    }
     
-    //MARK: - Calculate Facility Related Information
+   // Calculate Facility Related Information
     func calculateLocationDistance(with placemark: MKPlacemark) {
         let selectedLocation = CLLocation(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
         distanceList.removeAll()
@@ -133,40 +133,37 @@ class MapViewController: UIViewController {
     }
     
     func showFacilitiesWithin(within distance: Double) -> [(FacilityItem, CLLocation, Double)]? {
-        let sortedDistanceList = distanceList.sorted(by: { (lhs, rhs) -> Bool in
+        let sortedDistanceList = distanceList.sorted(by: {(lhs, rhs) -> Bool in
             lhs.2 <= rhs.2
         })
-        let distanceInMeter = distance * 1609.34
+        let distanceInMeter = distance * ChemFacilityConstants.milesToMeterConverter
         let filteredList = sortedDistanceList.filter({ (facility, location, distance) -> Bool in
             distance <= distanceInMeter
         })
         return filteredList
     }
     
-    //MARK: - Fetch Facility Methods
-    func fetchFacility() {
-        do {
-            let request = FacilityItem.fetchRequest() as NSFetchRequest<FacilityItem>
-            self.facilityList = try context.fetch(request)
-        } catch {
-            fatalError("Failed to fetch facility, \(error.localizedDescription)")
+    func updateStepperDisplay(_ stepper: UIStepper) {
+        if stepper.value == ChemFacilityConstants.stepperDefaultValue {
+            mileTextField.text = String(Int(mileStepper.value)) + ChemFacilityConstants.stepperDefaultText
+        } else {
+            mileTextField.text = String(Int(mileStepper.value)) + ChemFacilityConstants.stepperNonDefaultText
         }
     }
 }
-
 
 //MARK: - CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         DispatchQueue.main.async {
-            if let location = locations.first {
-                let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+            if let location = locations.last {
+                let span = MKCoordinateSpan(latitudeDelta: ChemFacilityConstants.latitudeDelta, longitudeDelta: ChemFacilityConstants.longitudeDelta)
                 let region = MKCoordinateRegion(center: location.coordinate, span: span)
                 self.mapView.setRegion(region, animated: true)
-                self.locationManager.stopUpdatingLocation()
             }
         }
+        self.locationManager.stopUpdatingLocation()
     }
     
     // Handle authorization for the location manager.
@@ -213,7 +210,7 @@ extension MapViewController: HandleMapSearch {
         self.mapView.removeAnnotations(self.mapView.annotations)
         
         createNewSurroundingAnnotations(with: placemark, miles: mileStepper.value)
-        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let span = MKCoordinateSpan(latitudeDelta: ChemFacilityConstants.latitudeDelta, longitudeDelta: ChemFacilityConstants.longitudeDelta)
         let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
@@ -249,12 +246,10 @@ extension MapViewController {
                 facilityPointerList.append(annotation)
             }
         }
+        
         DispatchQueue.main.async {
             self.mapView.addAnnotations(facilityPointerList)
         }
-        
         facilityPointer = facilityPointerList
     }
 }
-
-

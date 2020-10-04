@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55975D63252A64E200215657 /* ChemFacilityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55975D62252A64E200215657 /* ChemFacilityConstants.swift */; };
 		55C1BB262527EF8D0056DA19 /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 55C1BB252527EF8D0056DA19 /* Facility.csv */; };
 		55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450C25227C7500F876C3 /* AppDelegate.swift */; };
 		55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450E25227C7500F876C3 /* SceneDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		55975D62252A64E200215657 /* ChemFacilityConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChemFacilityConstants.swift; sourceTree = "<group>"; };
 		55C1BB252527EF8D0056DA19 /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
 		55F5450925227C7500F876C3 /* ChemicalFacilitiesAroundMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChemicalFacilitiesAroundMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F5450C25227C7500F876C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			children = (
 				55F5450C25227C7500F876C3 /* AppDelegate.swift */,
 				55F5450E25227C7500F876C3 /* SceneDelegate.swift */,
+				55975D62252A64E200215657 /* ChemFacilityConstants.swift */,
 				55C1BB2825286A400056DA19 /* Model */,
 				55C1BB3025286AB20056DA19 /* View */,
 				55C1BB2E25286A720056DA19 /* Controller */,
@@ -172,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55F5451125227C7500F876C3 /* MapViewController.swift in Sources */,
+				55975D63252A64E200215657 /* ChemFacilityConstants.swift in Sources */,
 				55F545262522839700F876C3 /* LocationSearchTable.swift in Sources */,
 				55F5451725227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld in Sources */,
 				55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */,
