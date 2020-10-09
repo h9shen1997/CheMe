@@ -9,10 +9,11 @@ import UIKit
 import MapKit
 
 class LocationSearchTable: UITableViewController {
-    var matchingItems = [MKMapItem]()
-    var mapView: MKMapView?
-    var handleMapSearchDelegate: HandleMapSearch?
-    var searchBar: UISearchBar?
+    private var matchingItems = [MKMapItem]()
+    private var searchBar: UISearchBar?
+    public var mapView: MKMapView?
+    public var handleMapSearchDelegate: HandleMapSearch?
+    
 }
 
 //MARK: - UISearchResultsUpdating
@@ -37,7 +38,7 @@ extension LocationSearchTable: UISearchResultsUpdating {
     }
 }
 
-//MARK: - UIDataView Methods
+//MARK: - UITableViewDelegate and UITableViewDataSource
 extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return matchingItems.count
@@ -51,14 +52,12 @@ extension LocationSearchTable {
         cell.detailTextLabel?.text = address
         return cell
     }
-}
-
-//MARK: - UIDataSource Methods
-extension LocationSearchTable {
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         searchBar?.text = ChemFacilityConstants.searchBarDefaultText
         dismiss(animated: true, completion: nil)
+        
     }
 }
