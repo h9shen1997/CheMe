@@ -8,17 +8,23 @@
 import UIKit
 import MapKit
 import CoreData
-import ContainerControllerSwift
 
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark)
 }
 
 protocol MapViewControllerDelegate {
-    func toggleMenuPanel(forMenuOption menuOptions: MenuOption?)
+    func toggleMenuPanel(forMenuOption menuOption: MenuOption?)
 }
 
-class MapViewController: UIViewController, ContainerControllerDelegate {
+protocol UpdateFacilityResultTable {
+    func updateResultTable()
+}
+
+class MapViewController: UIViewController {
+
+    private let reuseIdentifier = "facilityResultCell"
+    
     private var locationManager: CLLocationManager!
     private var currentLocation: CLLocation?
     private var resultSearchController: UISearchController?
@@ -32,14 +38,12 @@ class MapViewController: UIViewController, ContainerControllerDelegate {
     private let myLocationButton = UIButton()
     private var shouldAllowStepper = true
     private var mapView = MKMapView()
-    private var stepperVStack = UIStackView()
     private var compassVStack = UIStackView()
-    private var mileTextField = UITextField()
-    private var mileStepper = UIStepper()
-    private var resultTable = UITableView()
-    private var container: ContainerController!
+
     
-    var delegate: MapViewControllerDelegate?
+    var updateDelegate: UpdateFacilityResultTable!
+    var facilityResultController: FacilityResultTable!
+    var menuDelegate: MapViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,35 +57,10 @@ class MapViewController: UIViewController, ContainerControllerDelegate {
         mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
-        stepperVStack.addArrangedSubview(mileTextField)
-        stepperVStack.addArrangedSubview(mileStepper)
-        
-        mileTextField.translatesAutoresizingMaskIntoConstraints = false
-        mileTextField.widthAnchor.constraint(equalToConstant: 275).isActive = true
-        mileTextField.backgroundColor = .systemGreen
-        mileTextField.alpha = 0.8
-        mileTextField.contentVerticalAlignment = .center
-        mileTextField.textAlignment = .center
-        mileTextField.layer.cornerRadius = 15
-        mileTextField.isUserInteractionEnabled = false
-        
-        mileStepper.translatesAutoresizingMaskIntoConstraints = false
-        mileStepper.autorepeat = false
-        mileStepper.minimumValue = 1
-        mileStepper.maximumValue = 10
-        mileStepper.addTarget(self, action: #selector(stepperPressed(_:)), for: .valueChanged)
-        
-        mapView.addSubview(stepperVStack)
-        stepperVStack.translatesAutoresizingMaskIntoConstraints = false
-        stepperVStack.axis = .vertical
-        stepperVStack.distribution = .fillEqually
-        stepperVStack.alignment = .center
-        stepperVStack.spacing = 5
-        stepperVStack.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -60).isActive = true
-        stepperVStack.leadingAnchor.constraint(equalTo: mapView.leadingAnchor, constant: 60).isActive = true
-        stepperVStack.bottomAnchor.constraint(equalTo: mapView.bottomAnchor, constant: -300).isActive = true
-        stepperVStack.heightAnchor.constraint(equalToConstant: 74).isActive = true
-        stepperVStack.isHidden = true
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
         
         mapView.addSubview(compassVStack)
         compassVStack.translatesAutoresizingMaskIntoConstraints = false
@@ -92,45 +71,29 @@ class MapViewController: UIViewController, ContainerControllerDelegate {
         compassVStack.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -25).isActive = true
         compassVStack.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 180).isActive = true
         
-        // Create ContainerController Layout object
-        let layout = ContainerLayout()
-        layout.startPosition = .hide
-        layout.backgroundShadowShow = true
-        layout.positions = ContainerPosition(top: 150, middle: 350, bottom: 100)
-
-        resultTable.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "facilityResultCell")
-        resultTable.backgroundColor = .red
-        resultTable.delegate = self
-        resultTable.dataSource = self
-        
-        container = ContainerController(addTo: self, layout: layout)
-        container.view.cornerRadius = 15
-        container.view.addShadow()
-        container.add(scrollView: resultTable)
-        
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        
-        
         // Initialize the search display table
-        let locationSearchTable = storyboard?.instantiateViewController(identifier: "locationSearchTable") as? LocationSearchTable
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let locationSearchTable = storyboard.instantiateViewController(identifier: "locationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable
         resultSearchController?.hidesNavigationBarDuringPresentation = false
         resultSearchController?.obscuresBackgroundDuringPresentation = true
-
+        
+        facilityResultController = FacilityResultTable()
+        facilityResultController.updateDelegate = self
+        addChild(facilityResultController)
+        //view.addSubview(facilityResultController.view)
+        facilityResultController.didMove(toParent: self)
+        
         // Create a search bar with placeholder
         let searchBar = resultSearchController!.searchBar
         searchBar.autocapitalizationType = .words
         searchBar.placeholder = ChemFacilityConstants.searchBarPlaceholder
         navigationItem.searchController = resultSearchController
         navigationItem.hidesSearchBarWhenScrolling = false
-        navigationItem.title = ChemFacilityConstants.navigationTitle
         definesPresentationContext = true
-        locationSearchTable?.mapView = mapView
-        locationSearchTable?.handleMapSearchDelegate = self
+        locationSearchTable.mapView = mapView
+        locationSearchTable.handleMapSearchDelegate = self
         
         // Create the myLocation button
         compassVStack.addArrangedSubview(myLocationButton)
@@ -155,13 +118,6 @@ class MapViewController: UIViewController, ContainerControllerDelegate {
         fetchFacility()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        container.remove()
-        container = nil
-    }
-    
     func configureNavigationBar() {
         navigationController?.navigationBar.barTintColor = .none
         navigationController?.navigationBar.barStyle = .default
@@ -178,23 +134,13 @@ extension MapViewController {
         locationManager.startUpdatingLocation()
     }
     
-    @objc func stepperPressed(_ sender: UIStepper!) {
-        updateStepperDisplay(sender)
-        if shouldAllowStepper {
-            if let pin = selectedPin {
-                createNewSurroundingAnnotations(with: pin, miles: sender.value)
-            }
-        }
-    }
-    
     @objc func refreshPressed(_ sender: UIBarButtonItem) {
         mapView.removeAnnotations(mapView.annotations)
         shouldAllowStepper = false
-        stepperVStack.isHidden = true
     }
     
     @objc func menuPressed(_ sender: UIBarButtonItem) {
-        delegate?.toggleMenuPanel(forMenuOption: nil)
+        menuDelegate?.toggleMenuPanel(forMenuOption: nil)
     }
 }
 
@@ -230,61 +176,6 @@ extension MapViewController {
             distance <= distanceInMeter
         })
         return filteredList
-    }
-    
-    func updateStepperDisplay(_ stepper: UIStepper) {
-        if stepper.value == ChemFacilityConstants.stepperDefaultValue {
-            mileTextField.text = String(Int(mileStepper.value)) + ChemFacilityConstants.stepperDefaultText
-        } else {
-            mileTextField.text = String(Int(mileStepper.value)) + ChemFacilityConstants.stepperNonDefaultText
-        }
-    }
-}
-
-extension MapViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return surroundingFacility?.count ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "facilityResultCell", for: indexPath)
-        if let facilityList = surroundingFacility {
-            let selectedFacility = facilityList[indexPath.row].0
-            cell.textLabel?.text = selectedFacility.facilityName
-            var detailedText = "\(selectedFacility.streetAddress ?? ""), \(selectedFacility.city ?? "")"
-            if detailedText.count > 30 {
-                detailedText = "\((detailedText as NSString).substring(to: 30))..."
-            }
-            cell.detailTextLabel?.text = detailedText
-        }
-        cell.backgroundColor = .clear
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        resultTable.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-}
-
-extension MapViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        container.scrollViewDidScroll(scrollView)
-    }
-
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        container.scrollViewWillBeginDragging(scrollView)
-    }
-
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        container.scrollViewDidEndDecelerating(scrollView)
-    }
-
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        container.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     }
 }
 
@@ -341,17 +232,12 @@ extension MapViewController: CLLocationManagerDelegate {
 //MARK: - HandleMapSearch Protocol
 extension MapViewController: HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark) {
-        // Define the default value of the mileTextField
-        stepperVStack.isHidden = false
-        container.move(type: .middle)
-        mileStepper.value = ChemFacilityConstants.stepperDefaultValue
-        updateStepperDisplay(mileStepper)
-        
         shouldAllowStepper = true
         selectedPin = placemark
+        mapView.addSubview(facilityResultController.view)
         mapView.removeAnnotations(self.mapView.annotations)
         
-        createNewSurroundingAnnotations(with: placemark, miles: mileStepper.value)
+        createNewSurroundingAnnotations(with: placemark, miles: facilityResultController.stepper.value)
         let span = MKCoordinateSpan(latitudeDelta: ChemFacilityConstants.latitudeDelta, longitudeDelta: ChemFacilityConstants.longitudeDelta)
         let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         let annotation = MKPointAnnotation()
@@ -374,13 +260,15 @@ extension MapViewController {
         
         calculateLocationDistance(with: placemark)
         surroundingFacility = showFacilitiesWithin(within: miles)
+        facilityResultController.surroundingFacility = surroundingFacility
+        facilityResultController.tableView.reloadData()
         var facilityPointerList = [MKPointAnnotation]()
         if facilityPointer != nil {
             mapView.removeAnnotations(facilityPointer!)
             facilityPointer!.removeAll()
         }
-        if let nearbyFacility = surroundingFacility {
-            for facility in nearbyFacility {
+        if let surroundingFacility = surroundingFacility {
+            for facility in surroundingFacility {
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = facility.1.coordinate
                 annotation.title = facility.0.facilityName
@@ -393,7 +281,13 @@ extension MapViewController {
             self.mapView.addAnnotations(facilityPointerList)
         }
         facilityPointer = facilityPointerList
-        container.move(type: .bottom)
-        resultTable.reloadData()
+    }
+}
+
+extension MapViewController: UpdateFacilityResultTable {
+    func updateResultTable() {
+        if let selectedPin = selectedPin {
+            createNewSurroundingAnnotations(with: selectedPin, miles: facilityResultController.stepper.value)
+        }
     }
 }

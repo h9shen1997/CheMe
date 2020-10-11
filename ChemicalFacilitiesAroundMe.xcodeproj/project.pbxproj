@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,9 @@
 		55C09FA6252FD6BA001F49EB /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FA5252FD6BA001F49EB /* ContainerViewController.swift */; };
 		55C09FA9252FDA12001F49EB /* MenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FA8252FDA12001F49EB /* MenuOptionCell.swift */; };
 		55C09FBA253045C6001F49EB /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FB9253045C6001F49EB /* MenuOption.swift */; };
+		55C09FC325314661001F49EB /* InstantPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FC225314661001F49EB /* InstantPanGestureRecognizer.swift */; };
+		55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FC525314669001F49EB /* FacilityResultTable.swift */; };
+		55C09FD82531B42B001F49EB /* ComplaintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FD72531B42B001F49EB /* ComplaintController.swift */; };
 		55C1BB262527EF8D0056DA19 /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 55C1BB252527EF8D0056DA19 /* Facility.csv */; };
 		55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450C25227C7500F876C3 /* AppDelegate.swift */; };
 		55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450E25227C7500F876C3 /* SceneDelegate.swift */; };
@@ -33,6 +36,9 @@
 		55C09FA5252FD6BA001F49EB /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		55C09FA8252FDA12001F49EB /* MenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOptionCell.swift; sourceTree = "<group>"; };
 		55C09FB9253045C6001F49EB /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
+		55C09FC225314661001F49EB /* InstantPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstantPanGestureRecognizer.swift; sourceTree = "<group>"; };
+		55C09FC525314669001F49EB /* FacilityResultTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityResultTable.swift; sourceTree = "<group>"; };
+		55C09FD72531B42B001F49EB /* ComplaintController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplaintController.swift; sourceTree = "<group>"; };
 		55C1BB252527EF8D0056DA19 /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
 		55F5450925227C7500F876C3 /* ChemicalFacilitiesAroundMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChemicalFacilitiesAroundMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F5450C25227C7500F876C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,8 +91,11 @@
 				55F5451025227C7500F876C3 /* MapViewController.swift */,
 				55C09FA2252FD572001F49EB /* MenuPanelController.swift */,
 				55F545252522839700F876C3 /* LocationSearchTable.swift */,
+				55C09FC525314669001F49EB /* FacilityResultTable.swift */,
 				55C09FA8252FDA12001F49EB /* MenuOptionCell.swift */,
 				556C740E252EC54800932F9B /* SubtitleTableViewCell.swift */,
+				55C09FC225314661001F49EB /* InstantPanGestureRecognizer.swift */,
+				55C09FD72531B42B001F49EB /* ComplaintController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -161,7 +170,7 @@
 				55F5450525227C7500F876C3 /* Sources */,
 				55F5450625227C7500F876C3 /* Frameworks */,
 				55F5450725227C7500F876C3 /* Resources */,
-				48264E71D9F06EC07EFC46BA /* [CP] Embed Pods Frameworks */,
+				438643FC3606F095922A7A23 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -241,7 +250,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		48264E71D9F06EC07EFC46BA /* [CP] Embed Pods Frameworks */ = {
+		438643FC3606F095922A7A23 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -270,8 +279,11 @@
 				55975D63252A64E200215657 /* ChemFacilityConstants.swift in Sources */,
 				556C740F252EC54800932F9B /* SubtitleTableViewCell.swift in Sources */,
 				55F545262522839700F876C3 /* LocationSearchTable.swift in Sources */,
+				55C09FC325314661001F49EB /* InstantPanGestureRecognizer.swift in Sources */,
 				55F5451725227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld in Sources */,
+				55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */,
 				55C09FA3252FD572001F49EB /* MenuPanelController.swift in Sources */,
+				55C09FD82531B42B001F49EB /* ComplaintController.swift in Sources */,
 				55C09FA9252FDA12001F49EB /* MenuOptionCell.swift in Sources */,
 				55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */,
 				55C09FA6252FD6BA001F49EB /* ContainerViewController.swift in Sources */,

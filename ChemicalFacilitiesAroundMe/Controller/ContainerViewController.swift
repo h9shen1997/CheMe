@@ -10,8 +10,9 @@ import UIKit
 class ContainerViewController: UIViewController {
 
     var menuPanelController: MenuPanelController!
-    var centerController: UIViewController!
     var mapViewController: MapViewController!
+    var resultTableController: FacilityResultTable!
+    var centerController: UIViewController!
     var isExpanded = false
     
     let centerPanelExpandedOffset: CGFloat = 150
@@ -22,8 +23,8 @@ class ContainerViewController: UIViewController {
         configureMapViewController()
         configureMenuPanelController()
         
-        let panGesturerecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-        centerController.view.addGestureRecognizer(panGesturerecognizer)
+//        let panGesturerecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+//        centerController.view.addGestureRecognizer(panGesturerecognizer)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -40,7 +41,7 @@ class ContainerViewController: UIViewController {
     
     func configureMapViewController() {
         mapViewController = MapViewController()
-        mapViewController.delegate = self
+        mapViewController.menuDelegate = self
         centerController = UINavigationController(rootViewController: mapViewController)
         view.addSubview(centerController.view)
         addChild(centerController)
@@ -49,7 +50,6 @@ class ContainerViewController: UIViewController {
     
     func configureMenuPanelController() {
         if menuPanelController == nil {
-            print("menu panel was created")
             menuPanelController = MenuPanelController()
             menuPanelController.delegate = self
             view.insertSubview(menuPanelController.view, at: 0)
@@ -60,12 +60,12 @@ class ContainerViewController: UIViewController {
 }
 
 extension ContainerViewController: MapViewControllerDelegate {
-    func toggleMenuPanel(forMenuOption menuOptions: MenuOption?) {
+    func toggleMenuPanel(forMenuOption menuOption: MenuOption?) {
         if !isExpanded {
             configureMenuPanelController()
         }
         isExpanded = !isExpanded
-        animateMenuPanel(shouldExpand: isExpanded, menuOption: nil)
+        animateMenuPanel(shouldExpand: isExpanded, menuOption: menuOption)
     }
     
     func animateCenterPanelXPosition(targetPosition: CGFloat, completion: ((Bool) -> Void)? = nil) {
@@ -76,12 +76,15 @@ extension ContainerViewController: MapViewControllerDelegate {
     
     func animateMenuPanel(shouldExpand: Bool, menuOption: MenuOption?) {
         if shouldExpand {
-            animateCenterPanelXPosition(targetPosition: centerController.view.frame.width
-             - centerPanelExpandedOffset)
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                self.centerController.view.frame.origin.x = self.centerController.view.frame.width
+                    - self.centerPanelExpandedOffset
+            } completion: { (_) in
+            }
         } else {
-            animateCenterPanelXPosition(targetPosition: 0)
-            
-            animateCenterPanelXPosition(targetPosition: 0) { (_) in
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                self.centerController.view.frame.origin.x = 0
+            } completion: { (_) in
                 guard let menuOption = menuOption else { return }
                 self.didSelectMenuOption(menuOption: menuOption)
             }
@@ -104,7 +107,12 @@ extension ContainerViewController: MapViewControllerDelegate {
         case .Education:
             print("Education")
         case .Complaint:
-            print("Complaint")
+            print("complaint pressed")
+            let complaintController = ComplaintController()
+            let navigationController = UINavigationController(rootViewController: complaintController)
+            navigationController.modalPresentationStyle = .fullScreen
+            complaintController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         case .Explore:
             print("explore")
         }
@@ -117,33 +125,31 @@ extension ContainerViewController: MapViewControllerDelegate {
             centerController.view.layer.shadowOpacity = 0
         }
     }
-    
-    
 }
 
-extension ContainerViewController: UIGestureRecognizerDelegate {
-    @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
-        let gestureIsDraggingFromLeftToRight = (recognizer.velocity(in: view).x > 0)
-        switch recognizer.state {
-        case .began:
-            if !isExpanded {
-                if gestureIsDraggingFromLeftToRight {
-                    configureMenuPanelController()
-                }
-            }
-            showShadowForCenterViewController(true)
-        case .changed:
-            if let rview = recognizer.view {
-                rview.center.x = rview.center.x + recognizer.translation(in: view).x
-                recognizer.setTranslation(CGPoint.zero, in: view)
-            }
-        case .ended:
-            if let _ = menuPanelController, let rview = recognizer.view {
-                let hasMovedGreaterThanHalfway = rview.center.x > view.bounds.size.width
-                animateMenuPanel(shouldExpand: hasMovedGreaterThanHalfway, menuOption: nil)
-            }
-        default:
-            break
-        }
-    }
-}
+//extension ContainerViewController: UIGestureRecognizerDelegate {
+//    @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+//        let gestureIsDraggingFromLeftToRight = (recognizer.velocity(in: view).x > 0)
+//        switch recognizer.state {
+//        case .began:
+//            if !isExpanded {
+//                if gestureIsDraggingFromLeftToRight {
+//                    configureMenuPanelController()
+//                }
+//            }
+//            showShadowForCenterViewController(true)
+//        case .changed:
+//            if let rview = recognizer.view {
+//                rview.center.x = rview.center.x + recognizer.translation(in: view).x
+//                recognizer.setTranslation(CGPoint.zero, in: view)
+//            }
+//        case .ended:
+//            if let _ = menuPanelController, let rview = recognizer.view {
+//                let hasMovedGreaterThanHalfway = rview.center.x > view.bounds.size.width / 2
+//                animateMenuPanel(shouldExpand: hasMovedGreaterThanHalfway, menuOption: nil)
+//            }
+//        default:
+//            break
+//        }
+//    }
+//}
