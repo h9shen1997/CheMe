@@ -15,7 +15,6 @@ class MenuPanelController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureTableView()
     }
     
@@ -23,10 +22,9 @@ class MenuPanelController: UIViewController {
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .white
         tableView.separatorStyle = .singleLine
-        tableView.backgroundColor = .lightGray
-        tableView.rowHeight = 80
+        tableView.backgroundColor = #colorLiteral(red: 0.9098039216, green: 0.9098039216, blue: 0.9098039216, alpha: 1)
+        tableView.rowHeight = 75
         
         view.addSubview(tableView)
         

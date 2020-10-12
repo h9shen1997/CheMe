@@ -103,7 +103,7 @@ class MapViewController: UIViewController {
         myLocationButton.heightAnchor.constraint(equalToConstant: 42).isActive = true
         myLocationButton.widthAnchor.constraint(equalToConstant: 42).isActive = true
         myLocationButton.setImage(largeLocationButton, for: .normal)
-        myLocationButton.tintColor = UIColor.red
+        myLocationButton.tintColor = #colorLiteral(red: 0.02745098039, green: 0.4078431373, blue: 0.6235294118, alpha: 1)
         myLocationButton.addTarget(self, action: #selector(myLocationButtonPressed), for: .touchUpInside)
         
         // Create a compass at customized location
@@ -119,11 +119,14 @@ class MapViewController: UIViewController {
     }
     
     func configureNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .none
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.7882352941, blue: 0.2352941176, alpha: 1)
         navigationController?.navigationBar.barStyle = .default
         navigationItem.title = "Chemical Facility Around Me"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "text.justify"), style: .plain, target: self, action: #selector(menuPressed(_:)))
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)]
+        navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshPressed(_:)))
+        navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
     }
     
 
@@ -137,6 +140,7 @@ extension MapViewController {
     @objc func refreshPressed(_ sender: UIBarButtonItem) {
         mapView.removeAnnotations(mapView.annotations)
         shouldAllowStepper = false
+        facilityResultController.view.removeFromSuperview()
     }
     
     @objc func menuPressed(_ sender: UIBarButtonItem) {
@@ -234,10 +238,10 @@ extension MapViewController: HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark) {
         shouldAllowStepper = true
         selectedPin = placemark
-        mapView.addSubview(facilityResultController.view)
+        view.addSubview(facilityResultController.view)
         mapView.removeAnnotations(self.mapView.annotations)
         
-        createNewSurroundingAnnotations(with: placemark, miles: facilityResultController.stepper.value)
+        createNewSurroundingAnnotations(with: placemark, miles: Double(facilityResultController.stepperValue))
         let span = MKCoordinateSpan(latitudeDelta: ChemFacilityConstants.latitudeDelta, longitudeDelta: ChemFacilityConstants.longitudeDelta)
         let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         let annotation = MKPointAnnotation()
@@ -287,7 +291,7 @@ extension MapViewController {
 extension MapViewController: UpdateFacilityResultTable {
     func updateResultTable() {
         if let selectedPin = selectedPin {
-            createNewSurroundingAnnotations(with: selectedPin, miles: facilityResultController.stepper.value)
+            createNewSurroundingAnnotations(with: selectedPin, miles: Double(facilityResultController.stepperValue))
         }
     }
 }

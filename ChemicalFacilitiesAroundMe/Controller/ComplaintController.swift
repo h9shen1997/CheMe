@@ -12,7 +12,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     private lazy var imageLabel: UILabel = {
         let imageLabel = UILabel()
         imageLabel.translatesAutoresizingMaskIntoConstraints = false
-        imageLabel.textColor = #colorLiteral(red: 0.3607843137, green: 0.5882352941, blue: 0.6196078431, alpha: 1)
+        imageLabel.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
         imageLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         imageLabel.text = "Pollution Images"
         return imageLabel
@@ -20,7 +20,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     
     private lazy var mainImage: UIImageView = {
         let mainImage = UIImageView()
-        
+        mainImage.contentMode = .scaleToFill
         mainImage.backgroundColor = .white
         mainImage.layer.cornerRadius = 10
         mainImage.translatesAutoresizingMaskIntoConstraints = false
@@ -29,6 +29,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     
     private lazy var otherImage: UIImageView = {
         let otherImage = UIImageView()
+        otherImage.contentMode = .scaleToFill
         otherImage.backgroundColor = .white
         otherImage.layer.cornerRadius = 10
         otherImage.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +50,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         let description = UILabel()
         description.translatesAutoresizingMaskIntoConstraints = false
         description.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-        description.textColor = #colorLiteral(red: 0.3607843137, green: 0.5882352941, blue: 0.6196078431, alpha: 1)
+        description.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
         description.text = "Event Description"
         return description
     }()
@@ -59,7 +60,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         describeText.isUserInteractionEnabled = true
         describeText.textColor = .lightGray
         describeText.backgroundColor = .white
-        describeText.font = UIFont.systemFont(ofSize: 16)
+        describeText.font = UIFont.systemFont(ofSize: 14)
         describeText.text = textViewPlaceholder
         describeText.backgroundColor = .white
         describeText.layer.cornerRadius = 10
@@ -69,8 +70,8 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.textColor = #colorLiteral(red: 0.3607843137, green: 0.5882352941, blue: 0.6196078431, alpha: 1)
-        nameLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        nameLabel.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
+        nameLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         nameLabel.text = "Full Name"
         return nameLabel
     }()
@@ -93,8 +94,8 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     private lazy var numberLabel: UILabel = {
         let number = UILabel()
         number.translatesAutoresizingMaskIntoConstraints = false
-        number.textColor = #colorLiteral(red: 0.3607843137, green: 0.5882352941, blue: 0.6196078431, alpha: 1)
-        number.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        number.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
+        number.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         number.text = "Contact Number"
         return number
     }()
@@ -111,17 +112,16 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         text.heightAnchor.constraint(equalToConstant: 40).isActive = true
         text.widthAnchor.constraint(equalToConstant: 200).isActive = true
         text.placeholder = "Enter contact number..."
-        
         return text
     }()
     
     private lazy var submitButton: UIButton = {
         let button = UIButton()
         button.setTitle("Submit", for: .normal)
-        button.setTitleColor(#colorLiteral(red: 0.3607843137, green: 0.5882352941, blue: 0.6196078431, alpha: 1), for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: .bold)
         button.layer.cornerRadius = 10
-        button.backgroundColor = #colorLiteral(red: 0.9803921569, green: 0.862745098, blue: 0.6666666667, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.9294117647, green: 0.4, blue: 0.3882352941, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100).isActive = true
@@ -142,15 +142,18 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     }
     
     func configureNavBarUI() {
-        view.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.7725490196, blue: 0.7098039216, alpha: 1)
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8980392157, green: 0.7725490196, blue: 0.7098039216, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 1, green: 0.6392156863, blue: 0.4470588235, alpha: 1)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.6392156863, blue: 0.4470588235, alpha: 1)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.title = "Complaint"
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.systemBlue]
+        navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.02745098039, green: 0.4078431373, blue: 0.6235294118, alpha: 1)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)]
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "delete.left"), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleCamera))
+        navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
     }
     
     @objc func handleDismiss() {
@@ -158,6 +161,12 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func buttonPressed() {
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
+            self.submitButton.alpha = 0.3
+        } completion: { (_) in
+            self.submitButton.alpha = 1
+        }
+
         if mainImage.image == nil || otherImage.image == nil || describeText.text == textViewPlaceholder || nameText.text == nil || numberText.text == nil {
             let alert = UIAlertController(title: "Warning", message: "All fields need to be completed for a valid complaint", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -237,7 +246,6 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         mainImage.widthAnchor.constraint(equalToConstant: 150).isActive = true
         otherImage.heightAnchor.constraint(equalToConstant: 150).isActive = true
         otherImage.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        
         describeText.heightAnchor.constraint(equalToConstant: 140).isActive = true
         describeText.widthAnchor.constraint(equalToConstant: 320).isActive = true
     }

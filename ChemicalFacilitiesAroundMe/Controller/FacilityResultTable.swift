@@ -30,6 +30,7 @@ class FacilityResultTable: UIViewController {
     public var surroundingFacility: [(FacilityItem, CLLocation, Double)]?
     public var tableView: UITableView!
     public var updateDelegate: UpdateFacilityResultTable?
+    public var stepperValue = 1
     
     public var stepperStack: UIStackView = {
         let stack = UIStackView()
@@ -40,12 +41,43 @@ class FacilityResultTable: UIViewController {
         return stack
     }()
     
+    public var addButton: UIButton = {
+        let add = UIButton()
+        add.translatesAutoresizingMaskIntoConstraints = false
+        add.setImage(UIImage(named: "add"), for: .normal)
+        add.tag = 1
+        add.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        add.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        add.addTarget(self, action: #selector(stepperPressed), for: .touchUpInside)
+        return add
+    }()
+    
+    public var minusButton: UIButton = {
+        let minus = UIButton()
+        minus.translatesAutoresizingMaskIntoConstraints = false
+        minus.setImage(UIImage(named: "minus"), for: .normal)
+        minus.tag = 0
+        minus.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        minus.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        minus.addTarget(self, action: #selector(stepperPressed), for: .touchUpInside)
+        return minus
+    }()
+    
+    public var hstack: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.alignment = .center
+        stack.spacing = 5
+        stack.axis = .horizontal
+        return stack
+    }()
+    
     public var textStack: UIStackView = {
        let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.alignment = .center
-        stack.spacing = 4
+        stack.spacing = 7
         return stack
     }()
     
@@ -54,32 +86,23 @@ class FacilityResultTable: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Change Purview"
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = #colorLiteral(red: 0.5552168053, green: 0.7820718719, blue: 1, alpha: 1)
+        label.textColor = #colorLiteral(red: 0.7215686275, green: 0.231372549, blue: 0.368627451, alpha: 1)
         return label
-    }()
-    
-    public var stepper: UIStepper = {
-        let stepper = UIStepper()
-        stepper.translatesAutoresizingMaskIntoConstraints = false
-        stepper.autorepeat = false
-        stepper.minimumValue = 1
-        stepper.maximumValue = 5
-        return stepper
     }()
     
     public var ftextTop: UILabel = {
         let display = UILabel()
         display.translatesAutoresizingMaskIntoConstraints = false
-        display.font = UIFont.systemFont(ofSize: 15)
-        display.textColor = #colorLiteral(red: 0.5552168053, green: 0.7820718719, blue: 1, alpha: 1)
+        display.font = UIFont.systemFont(ofSize: 14)
+        display.textColor = #colorLiteral(red: 0.7215686275, green: 0.231372549, blue: 0.368627451, alpha: 1)
         return display
     }()
     
     public var ftextBottom: UILabel = {
         let display = UILabel()
         display.translatesAutoresizingMaskIntoConstraints = false
-        display.font = UIFont.systemFont(ofSize: 15)
-        display.textColor = #colorLiteral(red: 0.5552168053, green: 0.7820718719, blue: 1, alpha: 1)
+        display.font = UIFont.systemFont(ofSize: 14)
+        display.textColor = #colorLiteral(red: 0.7215686275, green: 0.231372549, blue: 0.368627451, alpha: 1)
         return display
     }()
     
@@ -93,8 +116,8 @@ class FacilityResultTable: UIViewController {
     private lazy var closedTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Facility"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        label.textColor = #colorLiteral(red: 0.5552168053, green: 0.7820718719, blue: 1, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.textColor = #colorLiteral(red: 0.7215686275, green: 0.231372549, blue: 0.368627451, alpha: 1)
         label.textAlignment = .center
         return label
     }()
@@ -102,8 +125,8 @@ class FacilityResultTable: UIViewController {
     private lazy var openTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Facility"
-        label.font = UIFont.systemFont(ofSize: 24, weight: .heavy)
-        label.textColor = #colorLiteral(red: 0.5552168053, green: 0.7820718719, blue: 1, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 26, weight: .heavy)
+        label.textColor = #colorLiteral(red: 0.7215686275, green: 0.231372549, blue: 0.368627451, alpha: 1)
         label.textAlignment = .center
         label.alpha = 0
         label.transform = CGAffineTransform(scaleX: 0.65, y: 0.65).concatenating(CGAffineTransform(translationX: 0, y: -15))
@@ -112,10 +135,10 @@ class FacilityResultTable: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        popupView.backgroundColor = #colorLiteral(red: 1, green: 0.8352941176, blue: 0.4941176471, alpha: 1)
         configureTableView()
         configureHeader()
         layout()
-        stepper.addTarget(self, action: #selector(stepperPressed), for: .valueChanged)
         tableView.reloadData()
         popupView.addGestureRecognizer(panRecognizer)
     }
@@ -127,18 +150,47 @@ class FacilityResultTable: UIViewController {
         popupView.addSubview(textStack)
         popupView.addSubview(stepperStack)
         stepperStack.addArrangedSubview(stepperLabel)
-        stepperStack.addArrangedSubview(stepper)
+        minusButton.layer.cornerRadius = 30
+        addButton.layer.cornerRadius = 30
+        hstack.addArrangedSubview(minusButton)
+        hstack.addArrangedSubview(addButton)
+        stepperStack.addArrangedSubview(hstack)
         textStack.addArrangedSubview(ftextTop)
         textStack.addArrangedSubview(ftextBottom)
         stepperStack.trailingAnchor.constraint(equalTo: popupView.trailingAnchor, constant: -22).isActive = true
-        stepperStack.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 20).isActive = true
+        stepperStack.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 22).isActive = true
         textStack.leadingAnchor.constraint(equalTo: popupView.leadingAnchor, constant: 28).isActive = true
         textStack.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 22).isActive = true
     }
     
-    @objc func stepperPressed() {
+    @objc func stepperPressed(_ sender: UIButton!) {
         let facilityNum = surroundingFacility?.count ?? 0
-        ftextTop.text = stepper.value == 1.0 ? "\(Int(stepper.value)) mile away" : "\(Int(stepper.value)) miles away"
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
+            sender.alpha = 0.5
+        } completion: { (_) in
+            sender.alpha = 1
+        }
+        switch sender.tag {
+        case 0:
+            if stepperValue == 1 {
+                let alert = UIAlertController(title: "Notice", message: "Minimum value of purview is 1 mile", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Got it", style: .default, handler: nil))
+                present(alert, animated: true, completion: nil)
+            } else {
+                stepperValue -= 1
+            }
+        case 1:
+            if stepperValue == 5 {
+                let alert = UIAlertController(title: "Notice", message: "Maximum value of purview is 5 miles", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Got it", style: .default, handler: nil))
+                present(alert, animated: true, completion: nil)
+            } else {
+                stepperValue += 1
+            }
+        default:
+            fatalError()
+        }
+        ftextTop.text = stepperValue == 1 ? "\(stepperValue) mile away" : "\(stepperValue) miles away"
         ftextBottom.text = facilityNum == 0 ? "\(facilityNum) facility" : "\(facilityNum) facilities"
         updateDelegate?.updateResultTable()
     }
@@ -307,7 +359,7 @@ class FacilityResultTable: UIViewController {
 extension FacilityResultTable: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let facilityNum = surroundingFacility?.count ?? 0
-        ftextTop.text = stepper.value == 1.0 ? "\(Int(stepper.value)) mile away" : "\(Int(stepper.value)) miles away"
+        ftextTop.text = stepperValue == 1 ? "\(stepperValue) mile away" : "\(stepperValue) miles away"
         ftextBottom.text = facilityNum == 0 ? "\(facilityNum) facility" : "\(facilityNum) facilities"
         return facilityNum
     }
@@ -319,7 +371,7 @@ extension FacilityResultTable: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.text = selectedFacility.facilityName
             var detailedText = "\(selectedFacility.streetAddress ?? ""), \(selectedFacility.city ?? "")"
             if detailedText.count > 30 {
-                detailedText = "\((detailedText as NSString).substring(to: 30))..."
+                detailedText = "\((detailedText as NSString).substring(to: 31))..."
             }
             cell.detailTextLabel?.text = detailedText
         }
@@ -327,6 +379,12 @@ extension FacilityResultTable: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let facilityController = FacilityController()
+        let navigationController = UINavigationController(rootViewController: facilityController)
+        navigationController.modalPresentationStyle = .fullScreen
+        facilityController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true, completion: nil)
         tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 }

@@ -15,7 +15,7 @@ class ContainerViewController: UIViewController {
     var centerController: UIViewController!
     var isExpanded = false
     
-    let centerPanelExpandedOffset: CGFloat = 150
+    let centerPanelExpandedOffset: CGFloat = 165
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,8 +104,8 @@ extension ContainerViewController: MapViewControllerDelegate {
             print("show Profile")
         case .AirQualityIndex:
             print("air quality index")
-        case .Education:
-            print("Education")
+        case .Explore:
+            print("explore")
         case .Complaint:
             print("complaint pressed")
             let complaintController = ComplaintController()
@@ -113,8 +113,8 @@ extension ContainerViewController: MapViewControllerDelegate {
             navigationController.modalPresentationStyle = .fullScreen
             complaintController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true, completion: nil)
-        case .Explore:
-            print("explore")
+        case .News:
+            print("news")
         }
     }
     

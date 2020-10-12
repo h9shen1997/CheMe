@@ -18,9 +18,9 @@ class MenuOptionCell: UITableViewCell {
     
     let menuLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 18)
-        label.text = "Sample Text"
+        label.text = ""
         return label
     }()
     
@@ -37,7 +37,7 @@ class MenuOptionCell: UITableViewCell {
         menuLabel.translatesAutoresizingMaskIntoConstraints = false
         menuLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         menuLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive = true
-        backgroundColor = .lightGray
+        backgroundColor = #colorLiteral(red: 0.9098039216, green: 0.9098039216, blue: 0.9098039216, alpha: 1)
     }
     
     required init?(coder: NSCoder) {

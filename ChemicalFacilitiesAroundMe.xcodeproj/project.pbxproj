@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,7 @@
 		55C09FC325314661001F49EB /* InstantPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FC225314661001F49EB /* InstantPanGestureRecognizer.swift */; };
 		55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FC525314669001F49EB /* FacilityResultTable.swift */; };
 		55C09FD82531B42B001F49EB /* ComplaintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FD72531B42B001F49EB /* ComplaintController.swift */; };
+		55C09FE4253303C3001F49EB /* FacilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FE3253303C3001F49EB /* FacilityController.swift */; };
 		55C1BB262527EF8D0056DA19 /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 55C1BB252527EF8D0056DA19 /* Facility.csv */; };
 		55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450C25227C7500F876C3 /* AppDelegate.swift */; };
 		55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450E25227C7500F876C3 /* SceneDelegate.swift */; };
@@ -39,6 +40,7 @@
 		55C09FC225314661001F49EB /* InstantPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstantPanGestureRecognizer.swift; sourceTree = "<group>"; };
 		55C09FC525314669001F49EB /* FacilityResultTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityResultTable.swift; sourceTree = "<group>"; };
 		55C09FD72531B42B001F49EB /* ComplaintController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplaintController.swift; sourceTree = "<group>"; };
+		55C09FE3253303C3001F49EB /* FacilityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityController.swift; sourceTree = "<group>"; };
 		55C1BB252527EF8D0056DA19 /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
 		55F5450925227C7500F876C3 /* ChemicalFacilitiesAroundMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChemicalFacilitiesAroundMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F5450C25227C7500F876C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				556C740E252EC54800932F9B /* SubtitleTableViewCell.swift */,
 				55C09FC225314661001F49EB /* InstantPanGestureRecognizer.swift */,
 				55C09FD72531B42B001F49EB /* ComplaintController.swift */,
+				55C09FE3253303C3001F49EB /* FacilityController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				55C09FD82531B42B001F49EB /* ComplaintController.swift in Sources */,
 				55C09FA9252FDA12001F49EB /* MenuOptionCell.swift in Sources */,
 				55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */,
+				55C09FE4253303C3001F49EB /* FacilityController.swift in Sources */,
 				55C09FA6252FD6BA001F49EB /* ContainerViewController.swift in Sources */,
 				55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */,
 			);
