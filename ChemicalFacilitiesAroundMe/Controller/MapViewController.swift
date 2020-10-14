@@ -42,8 +42,9 @@ class MapViewController: UIViewController {
 
     
     var updateDelegate: UpdateFacilityResultTable!
-    var facilityResultController: FacilityResultTable!
     var menuDelegate: MapViewControllerDelegate?
+    var facilityResultController: FacilityResultTable!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,9 +139,10 @@ extension MapViewController {
     }
     
     @objc func refreshPressed(_ sender: UIBarButtonItem) {
-        mapView.removeAnnotations(mapView.annotations)
-        shouldAllowStepper = false
-        facilityResultController.view.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            self.facilityResultController.view.removeFromSuperview()
+        }
     }
     
     @objc func menuPressed(_ sender: UIBarButtonItem) {
@@ -177,7 +179,7 @@ extension MapViewController {
         })
         let distanceInMeter = distance * ChemFacilityConstants.milesToMeterConverter
         let filteredList = sortedDistanceList.filter({ (facility, location, distance) -> Bool in
-            distance <= distanceInMeter
+            distance < distanceInMeter
         })
         return filteredList
     }
@@ -250,7 +252,6 @@ extension MapViewController: HandleMapSearch {
         if let city = placemark.locality, let state = placemark.administrativeArea {
             annotation.subtitle = "\(city) \(state)"
         }
-        
         DispatchQueue.main.async {
             self.mapView.addAnnotation(annotation)
             self.mapView.setRegion(region, animated: true)
@@ -265,7 +266,6 @@ extension MapViewController {
         calculateLocationDistance(with: placemark)
         surroundingFacility = showFacilitiesWithin(within: miles)
         facilityResultController.surroundingFacility = surroundingFacility
-        facilityResultController.tableView.reloadData()
         var facilityPointerList = [MKPointAnnotation]()
         if facilityPointer != nil {
             mapView.removeAnnotations(facilityPointer!)
@@ -276,12 +276,12 @@ extension MapViewController {
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = facility.1.coordinate
                 annotation.title = facility.0.facilityName
-                annotation.subtitle = "\(String(facility.0.county ?? "")), \(String(facility.0.city ?? ""))"
+                annotation.subtitle = "\(String(facility.0.city ?? ""))"
                 facilityPointerList.append(annotation)
             }
         }
-        
         DispatchQueue.main.async {
+            self.facilityResultController.tableView.reloadData()
             self.mapView.addAnnotations(facilityPointerList)
         }
         facilityPointer = facilityPointerList

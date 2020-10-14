@@ -38,7 +38,9 @@ extension LocationSearchTable: UISearchResultsUpdating {
                 return
             }
             self.matchingItems = response.mapItems
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
 }

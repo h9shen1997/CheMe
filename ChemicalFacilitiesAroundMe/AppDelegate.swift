@@ -8,15 +8,17 @@
 import UIKit
 import CoreData
 import IQKeyboardManager
+import GooglePlaces
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         preloadData()
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
         IQKeyboardManager.shared().isEnableAutoToolbar = false
+        GMSPlacesClient.provideAPIKey("AIzaSyDltyRQPHZu7R-K86F65vj-N1YaW7p3YB8")
+        
         return true
     }
 
@@ -59,19 +61,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let userDefaults = UserDefaults.standard
         if userDefaults.bool(forKey: preloadDataKey) == false {
             if let urlPath = Bundle.main.url(forResource: "Facility", withExtension: "csv") {
+                print(urlPath)
                 if let items = processData(contentsOfURL: urlPath, encoding: .utf8) {
-                    print("Preloading method is running")
                     for item in items {
                         let facilityItem = FacilityItem(context: context)
                         facilityItem.city = item.city
                         facilityItem.classification = item.classification
-                        facilityItem.county = item.county
                         facilityItem.facilityDescription = item.facilityDescription
                         facilityItem.facilityName = item.facilityName
                         facilityItem.latitude = item.latitude
                         facilityItem.longitude = item.longitude
-                        facilityItem.operationStatus = item.operationStatus
-                        facilityItem.streetAddress = item.streetAddress
+                        facilityItem.address = item.address
                         facilityItem.zipCode = item.zipCode
                     }
                 }
@@ -95,21 +95,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func processData(contentsOfURL: URL, encoding: String.Encoding) -> [(facilityName: String, streetAddress: String, city: String, zipCode: String, latitude: Double, longitude: Double, county: String, operationStatus: String, classification: String, facilityDescription: String)]? {
+    func processData(contentsOfURL: URL, encoding: String.Encoding) -> [(facilityName: String, address: String, city: String, zipCode: String, latitude: Double, longitude: Double, classification: String, facilityDescription: String)]? {
         
             let delimiter = ","
-            var items = [(facilityName: String, streetAddress: String, city: String, zipCode: String, latitude: Double, longitude: Double, county: String, operationStatus: String, classification: String, facilityDescription: String)]()
+            var items = [(facilityName: String, address: String, city: String, zipCode: String, latitude: Double, longitude: Double, classification: String, facilityDescription: String)]()
             do {
                 removeData()
                 let content = try String(contentsOf: contentsOfURL, encoding: encoding)
-                let lines = content.components(separatedBy: .newlines)
+                let lines = content.components(separatedBy: "\n")
                 for line in lines {
                     var values = [String]()
                     if line != "" {
                         values = line.components(separatedBy: delimiter)
+                        let item = (facilityName: values[0], address: values[1], city: values[2], zipCode: values[3], latitude: Double(values[4])!, longitude: Double(values[5])!, classification: values[6], facilityDescription: values[7])
+                        items.append(item)
                     }
-                    let item = (facilityName: values[0], streetAddress: values[1], city: values[2], zipCode: values[3], latitude: Double(values[4])!, longitude: Double(values[5])!, county: values[6], operationStatus: values[7], classification: values[8], facilityDescription: values[9])
-                    items.append(item)
                 }
             } catch {
                 fatalError("Failed to remove the data and preload the data, \(error.localizedDescription)")

@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 import UIKit.UIGestureRecognizerSubclass
+import CoreData
 
 private enum State {
     case closed
@@ -29,8 +30,10 @@ class FacilityResultTable: UIViewController {
     private let popupOffset: CGFloat = 600
     public var surroundingFacility: [(FacilityItem, CLLocation, Double)]?
     public var tableView: UITableView!
+    var locationArray = [CLLocation]()
     public var updateDelegate: UpdateFacilityResultTable?
     public var stepperValue = 1
+    
     
     public var stepperStack: UIStackView = {
         let stack = UIStackView()
@@ -165,17 +168,21 @@ class FacilityResultTable: UIViewController {
     
     @objc func stepperPressed(_ sender: UIButton!) {
         let facilityNum = surroundingFacility?.count ?? 0
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
-            sender.alpha = 0.5
-        } completion: { (_) in
-            sender.alpha = 1
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
+                sender.alpha = 0.5
+            } completion: { (_) in
+                sender.alpha = 1
+            }
         }
         switch sender.tag {
         case 0:
             if stepperValue == 1 {
                 let alert = UIAlertController(title: "Notice", message: "Minimum value of purview is 1 mile", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Got it", style: .default, handler: nil))
-                present(alert, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                }
             } else {
                 stepperValue -= 1
             }
@@ -183,16 +190,20 @@ class FacilityResultTable: UIViewController {
             if stepperValue == 5 {
                 let alert = UIAlertController(title: "Notice", message: "Maximum value of purview is 5 miles", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Got it", style: .default, handler: nil))
-                present(alert, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                }
             } else {
                 stepperValue += 1
             }
         default:
             fatalError()
         }
-        ftextTop.text = stepperValue == 1 ? "\(stepperValue) mile away" : "\(stepperValue) miles away"
-        ftextBottom.text = facilityNum == 0 ? "\(facilityNum) facility" : "\(facilityNum) facilities"
-        updateDelegate?.updateResultTable()
+        DispatchQueue.main.async {
+            self.ftextTop.text = self.stepperValue == 1 ? "\(self.stepperValue) mile away" : "\(self.stepperValue) miles away"
+            self.ftextBottom.text = facilityNum == 0 ? "\(facilityNum) facility" : "\(facilityNum) facilities"
+            self.updateDelegate?.updateResultTable()
+        }
     }
     
     private func configureTableView() {
@@ -208,8 +219,18 @@ class FacilityResultTable: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 70).isActive = true
+        tableView.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 80).isActive = true
         tableView.bottomAnchor.constraint(equalTo: popupView.bottomAnchor).isActive = true
+        
+        let footer = UIView()
+        footer.backgroundColor = #colorLiteral(red: 1, green: 0.8352941176, blue: 0.4941176471, alpha: 1)
+        tableView.tableFooterView = footer
+        
+        let px = 1 / UIScreen.main.scale
+        let frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: px)
+        let line = UIView(frame: frame)
+        tableView.tableHeaderView = line
+        line.backgroundColor = tableView.separatorColor
     }
     
     private func layout() {
@@ -359,20 +380,24 @@ class FacilityResultTable: UIViewController {
 extension FacilityResultTable: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let facilityNum = surroundingFacility?.count ?? 0
-        ftextTop.text = stepperValue == 1 ? "\(stepperValue) mile away" : "\(stepperValue) miles away"
-        ftextBottom.text = facilityNum == 0 ? "\(facilityNum) facility" : "\(facilityNum) facilities"
+        DispatchQueue.main.async {
+            self.ftextTop.text = self.stepperValue == 1 ? "\(self.stepperValue) mile away" : "\(self.stepperValue) miles away"
+            self.ftextBottom.text = facilityNum == 0 ? "\(facilityNum) facility" : "\(facilityNum) facilities"
+        }
         return facilityNum
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        //locationArray.removeAll()
         if let surroundingFacility = surroundingFacility {
+            locationArray.append(surroundingFacility[indexPath.row].1)
             let selectedFacility = surroundingFacility[indexPath.row].0
-            cell.textLabel?.text = selectedFacility.facilityName
-            var detailedText = "\(selectedFacility.streetAddress ?? ""), \(selectedFacility.city ?? "")"
+            var detailedText = "\(selectedFacility.address ?? ""), \(selectedFacility.city ?? "")"
             if detailedText.count > 30 {
                 detailedText = "\((detailedText as NSString).substring(to: 31))..."
             }
+            cell.textLabel?.text = selectedFacility.facilityName
             cell.detailTextLabel?.text = detailedText
         }
         return cell
@@ -383,8 +408,24 @@ extension FacilityResultTable: UITableViewDelegate, UITableViewDataSource {
         let navigationController = UINavigationController(rootViewController: facilityController)
         navigationController.modalPresentationStyle = .fullScreen
         facilityController.modalPresentationStyle = .fullScreen
-        present(navigationController, animated: true, completion: nil)
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        let currentCell = tableView.cellForRow(at: indexPath)
+        let facilityName = currentCell?.textLabel?.text
+        let location = surroundingFacility?[indexPath.row].1
+        let latitude = location?.coordinate.latitude
+        let longitude = location?.coordinate.longitude
+        let classification = surroundingFacility?[indexPath.row].0.classification
+        let facilityDesc = surroundingFacility?[indexPath.row].0.facilityDescription
+        facilityController.facilityName = facilityName
+        facilityController.latitude = latitude
+        facilityController.longitude = longitude
+        facilityController.classificationString = classification!
+        facilityController.facilityDescString = facilityDesc!
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.modalTransitionStyle = .flipHorizontal
+        facilityController.modalPresentationStyle = .fullScreen
+        DispatchQueue.main.async {
+            self.present(navigationController, animated: true, completion: nil)
+        }
     }
 }

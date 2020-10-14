@@ -37,7 +37,7 @@ class MenuOptionCell: UITableViewCell {
         menuLabel.translatesAutoresizingMaskIntoConstraints = false
         menuLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         menuLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive = true
-        backgroundColor = #colorLiteral(red: 0.9098039216, green: 0.9098039216, blue: 0.9098039216, alpha: 1)
+        backgroundColor = #colorLiteral(red: 0.9882352941, green: 0.8549019608, blue: 0.7176470588, alpha: 1)
     }
     
     required init?(coder: NSCoder) {

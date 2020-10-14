@@ -22,6 +22,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         let mainImage = UIImageView()
         mainImage.contentMode = .scaleToFill
         mainImage.backgroundColor = .white
+        mainImage.clipsToBounds = true
         mainImage.layer.cornerRadius = 10
         mainImage.translatesAutoresizingMaskIntoConstraints = false
         return mainImage
@@ -31,6 +32,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         let otherImage = UIImageView()
         otherImage.contentMode = .scaleToFill
         otherImage.backgroundColor = .white
+        otherImage.clipsToBounds = true
         otherImage.layer.cornerRadius = 10
         otherImage.translatesAutoresizingMaskIntoConstraints = false
         return otherImage
@@ -148,7 +150,6 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.title = "Complaint"
-        navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.02745098039, green: 0.4078431373, blue: 0.6235294118, alpha: 1)
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)]
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "delete.left"), style: .plain, target: self, action: #selector(handleDismiss))
         navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
@@ -157,20 +158,26 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func handleDismiss() {
-        dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc func buttonPressed() {
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
-            self.submitButton.alpha = 0.3
-        } completion: { (_) in
-            self.submitButton.alpha = 1
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
+                self.submitButton.alpha = 0.3
+            } completion: { (_) in
+                self.submitButton.alpha = 1
+            }
         }
 
         if mainImage.image == nil || otherImage.image == nil || describeText.text == textViewPlaceholder || nameText.text == nil || numberText.text == nil {
             let alert = UIAlertController(title: "Warning", message: "All fields need to be completed for a valid complaint", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
         }
         mainImage.image = nil
         otherImage.image = nil
@@ -180,7 +187,9 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         numberText.text = nil
         let alert = UIAlertController(title: "Successfully Submitted", message: "Someone will contact you shortly regarding your submitted complaint", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Got it!", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc func handleCamera() {
@@ -192,7 +201,9 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
             self.openGallery()
         }))
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func configureComplaintUI() {
@@ -253,22 +264,30 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     private func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
             imagePicker.sourceType = .camera
-            present(imagePicker, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }
         } else {
             let alert = UIAlertController(title: "Warning", message: "You don't have a camera", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
     
     private func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
             imagePicker.sourceType = .photoLibrary
-            present(imagePicker, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }
         } else {
             let alert = UIAlertController(title: "Warning", message: "You don't have permission to access photo album", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
 }
@@ -277,39 +296,49 @@ extension ComplaintController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = .black
+            DispatchQueue.main.async {
+                textView.text = nil
+                textView.textColor = .black
+            }
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = textViewPlaceholder
-            textView.textColor = UIColor.lightGray
+            DispatchQueue.main.async {
+                textView.text = self.textViewPlaceholder
+                textView.textColor = UIColor.lightGray
+            }
         }
     }
 }
 
 extension ComplaintController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.placeholder = ""
+        DispatchQueue.main.async {
+            textField.placeholder = ""
+        }
     }
 }
 
 extension ComplaintController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            if mainImage.image == nil {
-                mainImage.image = pickedImage
-            } else if otherImage.image == nil {
-                otherImage.image = pickedImage
-            } else {
-                imagePicker.dismiss(animated: true, completion: nil)
-                let alert = UIAlertController(title: "Warning", message: "Only two images allowed per complaint", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "I Understand!", style: .default, handler: nil))
-                present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                if self.mainImage.image == nil {
+                    self.mainImage.image = pickedImage
+                } else if self.otherImage.image == nil {
+                    self.otherImage.image = pickedImage
+                } else {
+                    self.imagePicker.dismiss(animated: true, completion: nil)
+                    let alert = UIAlertController(title: "Warning", message: "Only two images allowed per complaint", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "I Understand!", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         }
-        imagePicker.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.imagePicker.dismiss(animated: true, completion: nil)
+        }
     }
 }

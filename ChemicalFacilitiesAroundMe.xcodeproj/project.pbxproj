@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5547907E25343BB900254C16 /* AQIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5547907D25343BB900254C16 /* AQIController.swift */; };
+		555A7D6125358614003186E1 /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 555A7D6025358614003186E1 /* Facility.csv */; };
+		555A7D64253593AB003186E1 /* FacilityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A7D63253593AB003186E1 /* FacilityModel.swift */; };
+		555A7D67253593EA003186E1 /* FacilityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A7D66253593EA003186E1 /* FacilityData.swift */; };
 		556C740F252EC54800932F9B /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556C740E252EC54800932F9B /* SubtitleTableViewCell.swift */; };
 		55975D63252A64E200215657 /* ChemFacilityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55975D62252A64E200215657 /* ChemFacilityConstants.swift */; };
 		55C09FA3252FD572001F49EB /* MenuPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FA2252FD572001F49EB /* MenuPanelController.swift */; };
@@ -17,7 +21,6 @@
 		55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FC525314669001F49EB /* FacilityResultTable.swift */; };
 		55C09FD82531B42B001F49EB /* ComplaintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FD72531B42B001F49EB /* ComplaintController.swift */; };
 		55C09FE4253303C3001F49EB /* FacilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FE3253303C3001F49EB /* FacilityController.swift */; };
-		55C1BB262527EF8D0056DA19 /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 55C1BB252527EF8D0056DA19 /* Facility.csv */; };
 		55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450C25227C7500F876C3 /* AppDelegate.swift */; };
 		55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450E25227C7500F876C3 /* SceneDelegate.swift */; };
 		55F5451125227C7500F876C3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5451025227C7500F876C3 /* MapViewController.swift */; };
@@ -31,6 +34,10 @@
 
 /* Begin PBXFileReference section */
 		22A7941C01CDBCE1B8E2D564 /* Pods-ChemicalFacilitiesAroundMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChemicalFacilitiesAroundMe.debug.xcconfig"; path = "Target Support Files/Pods-ChemicalFacilitiesAroundMe/Pods-ChemicalFacilitiesAroundMe.debug.xcconfig"; sourceTree = "<group>"; };
+		5547907D25343BB900254C16 /* AQIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AQIController.swift; sourceTree = "<group>"; };
+		555A7D6025358614003186E1 /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
+		555A7D63253593AB003186E1 /* FacilityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityModel.swift; sourceTree = "<group>"; };
+		555A7D66253593EA003186E1 /* FacilityData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityData.swift; sourceTree = "<group>"; };
 		556C740E252EC54800932F9B /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		55975D62252A64E200215657 /* ChemFacilityConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChemFacilityConstants.swift; sourceTree = "<group>"; };
 		55C09FA2252FD572001F49EB /* MenuPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPanelController.swift; sourceTree = "<group>"; };
@@ -41,7 +48,6 @@
 		55C09FC525314669001F49EB /* FacilityResultTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityResultTable.swift; sourceTree = "<group>"; };
 		55C09FD72531B42B001F49EB /* ComplaintController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplaintController.swift; sourceTree = "<group>"; };
 		55C09FE3253303C3001F49EB /* FacilityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityController.swift; sourceTree = "<group>"; };
-		55C1BB252527EF8D0056DA19 /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
 		55F5450925227C7500F876C3 /* ChemicalFacilitiesAroundMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChemicalFacilitiesAroundMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F5450C25227C7500F876C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55F5450E25227C7500F876C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,7 +77,6 @@
 		55C09FC025307352001F49EB /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				55C1BB252527EF8D0056DA19 /* Facility.csv */,
 				55975D62252A64E200215657 /* ChemFacilityConstants.swift */,
 			);
 			path = Utility;
@@ -82,6 +87,8 @@
 			children = (
 				55C09FB9253045C6001F49EB /* MenuOption.swift */,
 				55F5451525227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld */,
+				555A7D63253593AB003186E1 /* FacilityModel.swift */,
+				555A7D66253593EA003186E1 /* FacilityData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -99,6 +106,7 @@
 				55C09FC225314661001F49EB /* InstantPanGestureRecognizer.swift */,
 				55C09FD72531B42B001F49EB /* ComplaintController.swift */,
 				55C09FE3253303C3001F49EB /* FacilityController.swift */,
+				5547907D25343BB900254C16 /* AQIController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -135,6 +143,7 @@
 			children = (
 				55F5450C25227C7500F876C3 /* AppDelegate.swift */,
 				55F5450E25227C7500F876C3 /* SceneDelegate.swift */,
+				555A7D6025358614003186E1 /* Facility.csv */,
 				55C09FC025307352001F49EB /* Utility */,
 				55C1BB2825286A400056DA19 /* Model */,
 				55C1BB3025286AB20056DA19 /* View */,
@@ -174,6 +183,7 @@
 				55F5450625227C7500F876C3 /* Frameworks */,
 				55F5450725227C7500F876C3 /* Resources */,
 				438643FC3606F095922A7A23 /* [CP] Embed Pods Frameworks */,
+				28CFB715D3E342389F72C0B2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -224,7 +234,7 @@
 				55F5451C25227C7900F876C3 /* LaunchScreen.storyboard in Resources */,
 				55F5451925227C7900F876C3 /* Assets.xcassets in Resources */,
 				55F5451425227C7500F876C3 /* Main.storyboard in Resources */,
-				55C1BB262527EF8D0056DA19 /* Facility.csv in Resources */,
+				555A7D6125358614003186E1 /* Facility.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +261,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		28CFB715D3E342389F72C0B2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ChemicalFacilitiesAroundMe/Pods-ChemicalFacilitiesAroundMe-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ChemicalFacilitiesAroundMe/Pods-ChemicalFacilitiesAroundMe-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChemicalFacilitiesAroundMe/Pods-ChemicalFacilitiesAroundMe-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		438643FC3606F095922A7A23 /* [CP] Embed Pods Frameworks */ = {
@@ -286,10 +313,13 @@
 				55F5451725227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld in Sources */,
 				55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */,
 				55C09FA3252FD572001F49EB /* MenuPanelController.swift in Sources */,
+				555A7D64253593AB003186E1 /* FacilityModel.swift in Sources */,
+				555A7D67253593EA003186E1 /* FacilityData.swift in Sources */,
 				55C09FD82531B42B001F49EB /* ComplaintController.swift in Sources */,
 				55C09FA9252FDA12001F49EB /* MenuOptionCell.swift in Sources */,
 				55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */,
 				55C09FE4253303C3001F49EB /* FacilityController.swift in Sources */,
+				5547907E25343BB900254C16 /* AQIController.swift in Sources */,
 				55C09FA6252FD6BA001F49EB /* ContainerViewController.swift in Sources */,
 				55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */,
 			);

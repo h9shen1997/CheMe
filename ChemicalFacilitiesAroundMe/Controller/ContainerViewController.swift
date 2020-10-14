@@ -22,7 +22,6 @@ class ContainerViewController: UIViewController {
         
         configureMapViewController()
         configureMenuPanelController()
-        
 //        let panGesturerecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
 //        centerController.view.addGestureRecognizer(panGesturerecognizer)
     }
@@ -101,18 +100,27 @@ extension ContainerViewController: MapViewControllerDelegate {
     func didSelectMenuOption(menuOption: MenuOption) {
         switch menuOption {
         case .Map:
-            print("show Profile")
+            ()
         case .AirQualityIndex:
-            print("air quality index")
+            let aqiController = AQIController()
+            let navigationController = UINavigationController(rootViewController: aqiController)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .flipHorizontal
+            aqiController.modalPresentationStyle = .fullScreen
+            DispatchQueue.main.async {
+                self.present(navigationController, animated: true, completion: nil)
+            }
         case .Explore:
             print("explore")
         case .Complaint:
-            print("complaint pressed")
             let complaintController = ComplaintController()
             let navigationController = UINavigationController(rootViewController: complaintController)
             navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .crossDissolve
             complaintController.modalPresentationStyle = .fullScreen
-            present(navigationController, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(navigationController, animated: true, completion: nil)
+            }
         case .News:
             print("news")
         }
