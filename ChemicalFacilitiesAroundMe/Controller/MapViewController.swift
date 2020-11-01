@@ -136,6 +136,11 @@ class MapViewController: UIViewController {
 extension MapViewController {
     @objc func myLocationButtonPressed() {
         locationManager.startUpdatingLocation()
+        let coord = locationManager.location?.coordinate
+        selectedPin = MKPlacemark(coordinate: coord!)
+        if let selectedPin = selectedPin {
+            dropPinZoomIn(placemark: selectedPin)
+        }
     }
     
     @objc func refreshPressed(_ sender: UIBarButtonItem) {
@@ -203,10 +208,8 @@ extension MapViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let accuracy = manager.accuracyAuthorization
         switch accuracy {
-        case .fullAccuracy:
-            print("Location accuracy is precise")
-        case .reducedAccuracy:
-            print("Location accuracy is not precise")
+        case .fullAccuracy: ()
+        case .reducedAccuracy: ()
         @unknown default:
             fatalError()
         }

@@ -21,6 +21,8 @@
 		55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FC525314669001F49EB /* FacilityResultTable.swift */; };
 		55C09FD82531B42B001F49EB /* ComplaintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FD72531B42B001F49EB /* ComplaintController.swift */; };
 		55C09FE4253303C3001F49EB /* FacilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FE3253303C3001F49EB /* FacilityController.swift */; };
+		55C4267C253EB0FF00478E34 /* ExploreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C4267B253EB0FF00478E34 /* ExploreController.swift */; };
+		55C42696253ED99A00478E34 /* NewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C42695253ED99A00478E34 /* NewsController.swift */; };
 		55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450C25227C7500F876C3 /* AppDelegate.swift */; };
 		55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5450E25227C7500F876C3 /* SceneDelegate.swift */; };
 		55F5451125227C7500F876C3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F5451025227C7500F876C3 /* MapViewController.swift */; };
@@ -31,6 +33,19 @@
 		55F545262522839700F876C3 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F545252522839700F876C3 /* LocationSearchTable.swift */; };
 		C4C084D983B224895AFDB981 /* Pods_ChemicalFacilitiesAroundMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47C6A54748911002D90406C /* Pods_ChemicalFacilitiesAroundMe.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		55C426A0253EDA1400478E34 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		22A7941C01CDBCE1B8E2D564 /* Pods-ChemicalFacilitiesAroundMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChemicalFacilitiesAroundMe.debug.xcconfig"; path = "Target Support Files/Pods-ChemicalFacilitiesAroundMe/Pods-ChemicalFacilitiesAroundMe.debug.xcconfig"; sourceTree = "<group>"; };
@@ -48,6 +63,8 @@
 		55C09FC525314669001F49EB /* FacilityResultTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityResultTable.swift; sourceTree = "<group>"; };
 		55C09FD72531B42B001F49EB /* ComplaintController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplaintController.swift; sourceTree = "<group>"; };
 		55C09FE3253303C3001F49EB /* FacilityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityController.swift; sourceTree = "<group>"; };
+		55C4267B253EB0FF00478E34 /* ExploreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreController.swift; sourceTree = "<group>"; };
+		55C42695253ED99A00478E34 /* NewsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsController.swift; sourceTree = "<group>"; };
 		55F5450925227C7500F876C3 /* ChemicalFacilitiesAroundMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChemicalFacilitiesAroundMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F5450C25227C7500F876C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55F5450E25227C7500F876C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +124,8 @@
 				55C09FD72531B42B001F49EB /* ComplaintController.swift */,
 				55C09FE3253303C3001F49EB /* FacilityController.swift */,
 				5547907D25343BB900254C16 /* AQIController.swift */,
+				55C4267B253EB0FF00478E34 /* ExploreController.swift */,
+				55C42695253ED99A00478E34 /* NewsController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -184,6 +203,7 @@
 				55F5450725227C7500F876C3 /* Resources */,
 				438643FC3606F095922A7A23 /* [CP] Embed Pods Frameworks */,
 				28CFB715D3E342389F72C0B2 /* [CP] Copy Pods Resources */,
+				55C426A0253EDA1400478E34 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -312,6 +332,7 @@
 				55C09FC325314661001F49EB /* InstantPanGestureRecognizer.swift in Sources */,
 				55F5451725227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld in Sources */,
 				55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */,
+				55C42696253ED99A00478E34 /* NewsController.swift in Sources */,
 				55C09FA3252FD572001F49EB /* MenuPanelController.swift in Sources */,
 				555A7D64253593AB003186E1 /* FacilityModel.swift in Sources */,
 				555A7D67253593EA003186E1 /* FacilityData.swift in Sources */,
@@ -320,6 +341,7 @@
 				55F5450D25227C7500F876C3 /* AppDelegate.swift in Sources */,
 				55C09FE4253303C3001F49EB /* FacilityController.swift in Sources */,
 				5547907E25343BB900254C16 /* AQIController.swift in Sources */,
+				55C4267C253EB0FF00478E34 /* ExploreController.swift in Sources */,
 				55C09FA6252FD6BA001F49EB /* ContainerViewController.swift in Sources */,
 				55F5450F25227C7500F876C3 /* SceneDelegate.swift in Sources */,
 			);

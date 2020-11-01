@@ -2,14 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>You can choose a pollution photo from your photo album</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Use the camera to capture pollution emitted</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Use the current location to populate a list of chemical facilities around you.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>CheMe</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,6 +22,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Use the Camera to Capture Emitted Pollution or Open Burning</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Use Your Location to Generate a List of Surrounding Facilities</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pick a Pollution Photo From Your Album</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

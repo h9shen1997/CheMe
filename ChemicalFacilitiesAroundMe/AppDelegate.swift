@@ -61,7 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let userDefaults = UserDefaults.standard
         if userDefaults.bool(forKey: preloadDataKey) == false {
             if let urlPath = Bundle.main.url(forResource: "Facility", withExtension: "csv") {
-                print(urlPath)
                 if let items = processData(contentsOfURL: urlPath, encoding: .utf8) {
                     for item in items {
                         let facilityItem = FacilityItem(context: context)

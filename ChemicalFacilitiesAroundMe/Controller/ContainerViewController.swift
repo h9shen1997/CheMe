@@ -111,7 +111,14 @@ extension ContainerViewController: MapViewControllerDelegate {
                 self.present(navigationController, animated: true, completion: nil)
             }
         case .Explore:
-            print("explore")
+            let exploreController = ExploreController()
+            let navigationController = UINavigationController(rootViewController: exploreController)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .flipHorizontal
+            exploreController.modalPresentationStyle = .fullScreen
+            DispatchQueue.main.async {
+                self.present(navigationController, animated: true, completion: nil)
+            }
         case .Complaint:
             let complaintController = ComplaintController()
             let navigationController = UINavigationController(rootViewController: complaintController)
@@ -122,7 +129,14 @@ extension ContainerViewController: MapViewControllerDelegate {
                 self.present(navigationController, animated: true, completion: nil)
             }
         case .News:
-            print("news")
+            let newsController = NewsController()
+            let navigationController = UINavigationController(rootViewController: newsController)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .flipHorizontal
+            newsController.modalPresentationStyle = .fullScreen
+            DispatchQueue.main.async {
+                self.present(navigationController, animated: true, completion: nil)
+            }
         }
     }
     

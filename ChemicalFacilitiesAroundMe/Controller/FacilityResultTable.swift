@@ -178,8 +178,8 @@ class FacilityResultTable: UIViewController {
         switch sender.tag {
         case 0:
             if stepperValue == 1 {
-                let alert = UIAlertController(title: "Notice", message: "Minimum value of purview is 1 mile", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Got it", style: .default, handler: nil))
+                let alert = UIAlertController(title: "Notice", message: "Minimum Purview Is 1 Mile", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Got It", style: .default, handler: nil))
                 DispatchQueue.main.async {
                     self.present(alert, animated: true, completion: nil)
                 }
@@ -188,8 +188,8 @@ class FacilityResultTable: UIViewController {
             }
         case 1:
             if stepperValue == 5 {
-                let alert = UIAlertController(title: "Notice", message: "Maximum value of purview is 5 miles", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Got it", style: .default, handler: nil))
+                let alert = UIAlertController(title: "Notice", message: "Maximum Purview Is 5 Miles", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Got It", style: .default, handler: nil))
                 DispatchQueue.main.async {
                     self.present(alert, animated: true, completion: nil)
                 }
@@ -200,8 +200,8 @@ class FacilityResultTable: UIViewController {
             fatalError()
         }
         DispatchQueue.main.async {
-            self.ftextTop.text = self.stepperValue == 1 ? "\(self.stepperValue) mile away" : "\(self.stepperValue) miles away"
-            self.ftextBottom.text = facilityNum == 0 ? "\(facilityNum) facility" : "\(facilityNum) facilities"
+            self.ftextTop.text = self.stepperValue == 1 ? "\(self.stepperValue) Mile Away" : "\(self.stepperValue) Miles Away"
+            self.ftextBottom.text = facilityNum == 0 ? "\(facilityNum) Facility" : "\(facilityNum) Facilities"
             self.updateDelegate?.updateResultTable()
         }
     }

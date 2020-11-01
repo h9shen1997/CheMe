@@ -12,7 +12,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     private lazy var imageLabel: UILabel = {
         let imageLabel = UILabel()
         imageLabel.translatesAutoresizingMaskIntoConstraints = false
-        imageLabel.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
+        imageLabel.textColor = #colorLiteral(red: 1, green: 0.8352941176, blue: 0.4431372549, alpha: 1)
         imageLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         imageLabel.text = "Pollution Images"
         return imageLabel
@@ -52,7 +52,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         let description = UILabel()
         description.translatesAutoresizingMaskIntoConstraints = false
         description.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-        description.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
+        description.textColor = #colorLiteral(red: 1, green: 0.8352941176, blue: 0.4431372549, alpha: 1)
         description.text = "Event Description"
         return description
     }()
@@ -72,7 +72,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
+        nameLabel.textColor = #colorLiteral(red: 1, green: 0.8352941176, blue: 0.4431372549, alpha: 1)
         nameLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         nameLabel.text = "Full Name"
         return nameLabel
@@ -89,14 +89,14 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         name.autocapitalizationType = .words
         name.heightAnchor.constraint(equalToConstant: 40).isActive = true
         name.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        name.placeholder = "Enter full name..."
+        name.placeholder = "Enter Your Full Name..."
         return name
     }()
     
     private lazy var numberLabel: UILabel = {
         let number = UILabel()
         number.translatesAutoresizingMaskIntoConstraints = false
-        number.textColor = #colorLiteral(red: 0.262745098, green: 0.3960784314, blue: 0.5450980392, alpha: 1)
+        number.textColor = #colorLiteral(red: 1, green: 0.8352941176, blue: 0.4431372549, alpha: 1)
         number.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         number.text = "Contact Number"
         return number
@@ -113,7 +113,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         text.layer.cornerRadius = 10
         text.heightAnchor.constraint(equalToConstant: 40).isActive = true
         text.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        text.placeholder = "Enter contact number..."
+        text.placeholder = "Enter Your Contact Number..."
         return text
     }()
     
@@ -131,10 +131,11 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     }()
     
     private let imagePicker = UIImagePickerController()
-    private let textViewPlaceholder = "Type your description of the pollution event..."
+    private let textViewPlaceholder = "Type Your Description of the Pollution Event..."
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        changeBackground()
         describeText.delegate = self
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
@@ -143,9 +144,19 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         submitButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     }
     
+    func changeBackground() {
+        let background = UIImage(named: "background")
+        let imageView = UIImageView(frame: view.bounds)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = background
+        imageView.center = view.center
+        view.addSubview(imageView)
+        view.sendSubviewToBack(imageView)
+    }
+    
     func configureNavBarUI() {
-        view.backgroundColor = #colorLiteral(red: 1, green: 0.6392156863, blue: 0.4470588235, alpha: 1)
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.6392156863, blue: 0.4470588235, alpha: 1)
+        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -173,7 +184,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         }
 
         if mainImage.image == nil || otherImage.image == nil || describeText.text == textViewPlaceholder || nameText.text == nil || numberText.text == nil {
-            let alert = UIAlertController(title: "Warning", message: "All fields need to be completed for a valid complaint", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Warning", message: "All Fields Need to Be Completed for a Valid Complaint", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
@@ -185,7 +196,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         describeText.textColor = .lightGray
         nameText.text = nil
         numberText.text = nil
-        let alert = UIAlertController(title: "Successfully Submitted", message: "Someone will contact you shortly regarding your submitted complaint", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Successfully Submitted", message: "Someone Will Contact You Shortly Regarding Your Submitted Complaint", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Got it!", style: .default, handler: nil))
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
@@ -193,11 +204,12 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func handleCamera() {
+        imagePicker.allowsEditing = false
         let alert = UIAlertController(title: "Choose Pollution Image", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action) in
             self.openCamera()
         }))
-        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "Photo Album", style: .default, handler: { (action) in
             self.openGallery()
         }))
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
@@ -268,8 +280,8 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
                 self.present(self.imagePicker, animated: true, completion: nil)
             }
         } else {
-            let alert = UIAlertController(title: "Warning", message: "You don't have a camera", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            let alert = UIAlertController(title: "Warning", message: "You Don't Have Access to the Camera", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Alright", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
             }
@@ -283,8 +295,8 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
                 self.present(self.imagePicker, animated: true, completion: nil)
             }
         } else {
-            let alert = UIAlertController(title: "Warning", message: "You don't have permission to access photo album", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            let alert = UIAlertController(title: "Warning", message: "You Don't Have Permission to Access Photo Album", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Alright", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
             }
@@ -331,8 +343,8 @@ extension ComplaintController: UIImagePickerControllerDelegate {
                     self.otherImage.image = pickedImage
                 } else {
                     self.imagePicker.dismiss(animated: true, completion: nil)
-                    let alert = UIAlertController(title: "Warning", message: "Only two images allowed per complaint", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "I Understand!", style: .default, handler: nil))
+                    let alert = UIAlertController(title: "Warning", message: "Only Two Images Allowed per Complaint", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Understand", style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
             }

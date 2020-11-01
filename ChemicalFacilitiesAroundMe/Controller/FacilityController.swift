@@ -28,6 +28,7 @@ class FacilityController: UIViewController {
     var learnButton: UIButton!
     var webButton: UIButton!
     var url: URL?
+    var contactNumber: String?
     
     
     var lblText: UITextView!
@@ -100,7 +101,7 @@ class FacilityController: UIViewController {
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationItem.title = "Facility Info"
+        navigationItem.title = "Facility Information"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)]
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "delete.left"), style: .plain, target: self, action: #selector(handleDismiss))
         navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
@@ -230,7 +231,7 @@ class FacilityController: UIViewController {
         name.textAlignment = .center
         name.translatesAutoresizingMaskIntoConstraints = false
         name.backgroundColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.5568627451, alpha: 1)
-        name.text = "N/A"
+        name.text = ""
         name.isUserInteractionEnabled = false
         name.textColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         name.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -252,7 +253,7 @@ class FacilityController: UIViewController {
         address.translatesAutoresizingMaskIntoConstraints = false
         address.textAlignment = .center
         address.backgroundColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.5568627451, alpha: 1)
-        address.text = "N/A"
+        address.text = ""
         address.textColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         address.isUserInteractionEnabled = false
         address.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -274,7 +275,7 @@ class FacilityController: UIViewController {
         classification.translatesAutoresizingMaskIntoConstraints = false
         classification.textAlignment = .center
         classification.backgroundColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.5568627451, alpha: 1)
-        classification.text = "N/A"
+        classification.text = ""
         classification.textColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         classification.isUserInteractionEnabled = false
         classification.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -296,11 +297,11 @@ class FacilityController: UIViewController {
         facilityDesc.translatesAutoresizingMaskIntoConstraints = false
         facilityDesc.textAlignment = .center
         facilityDesc.backgroundColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.5568627451, alpha: 1)
-        facilityDesc.text = "N/A"
+        facilityDesc.text = ""
         facilityDesc.textColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         facilityDesc.isUserInteractionEnabled = false
         facilityDesc.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        facilityDesc.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        facilityDesc.heightAnchor.constraint(equalToConstant: 50).isActive = true
         facilityDesc.widthAnchor.constraint(equalToConstant: 300).isActive = true
         
         stackfour.addArrangedSubview(descLabel)
@@ -335,7 +336,7 @@ class FacilityController: UIViewController {
         view.addSubview(buttonStack)
         buttonStack.addArrangedSubview(learnButton)
         buttonStack.addArrangedSubview(webButton)
-        buttonStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 700).isActive = true
+        buttonStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 730).isActive = true
         buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         let learnText = UILabel()
@@ -345,7 +346,7 @@ class FacilityController: UIViewController {
         learnText.contentMode = .center
         learnText.backgroundColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.5568627451, alpha: 1)
         learnText.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        learnText.topAnchor.constraint(equalTo: view.topAnchor, constant: 760).isActive = true
+        learnText.topAnchor.constraint(equalTo: view.topAnchor, constant: 790).isActive = true
         learnText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 135).isActive = true
         learnText.heightAnchor.constraint(equalToConstant: 20).isActive = true
         learnText.widthAnchor.constraint(equalToConstant: 70).isActive = true
@@ -357,7 +358,7 @@ class FacilityController: UIViewController {
         webText.contentMode = .center
         webText.backgroundColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.5568627451, alpha: 1)
         webText.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        webText.topAnchor.constraint(equalTo: view.topAnchor, constant: 760).isActive = true
+        webText.topAnchor.constraint(equalTo: view.topAnchor, constant: 790).isActive = true
         webText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 237).isActive = true
         webText.heightAnchor.constraint(equalToConstant: 20).isActive = true
         webText.widthAnchor.constraint(equalToConstant: 70).isActive = true
@@ -389,7 +390,7 @@ class FacilityController: UIViewController {
                 self.present(vc, animated: true)
             }
         } else {
-            let alert = UIAlertController(title: "Warning", message: "This facility currently does not have a website", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Warning", message: "This Facility Currently Does Not Have a Website", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
@@ -423,7 +424,27 @@ class FacilityController: UIViewController {
     }
     
     @objc func handleContact() {
-        
+        if let phoneNumber = self.contactNumber {
+            let editedPhoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "")
+            if let phoneURL = URL(string: "tel://\(editedPhoneNumber)") {
+                if UIApplication.shared.canOpenURL(phoneURL) {
+                    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    alert.addAction(UIAlertAction(title: "Contact the Facility", style: .default, handler: { (action) in
+                        UIApplication.shared.open(phoneURL)
+                    }))
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    DispatchQueue.main.async {
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+        } else {
+            let alert = UIAlertController(title: "Warning", message: "This Facility Currently Does Not Have a Contact Number. You Can Search Its Name in a Browser to Get More Information.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     func getPlaceDetail(with placeID: String) {
@@ -448,6 +469,7 @@ class FacilityController: UIViewController {
                 if let url = place.website {
                     self.url = url
                 }
+                self.contactNumber = place.phoneNumber
                 self.classification.text = self.classificationString
                 self.facilityDesc.text = self.facilityDescString
                 let photoArray: [GMSPlacePhotoMetadata]? = place.photos
