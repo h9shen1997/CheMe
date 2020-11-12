@@ -28,12 +28,11 @@ class FacilityResultTable: UIViewController {
     
     private let reuseIdentifier = "facilityCell"
     private let popupOffset: CGFloat = 600
-    public var surroundingFacility: [(FacilityItem, CLLocation, Double)]?
-    public var tableView: UITableView!
+    var surroundingFacility: [(FacilityItem, CLLocation, Double)]?
+    var tableView: UITableView!
     var locationArray = [CLLocation]()
-    public var updateDelegate: UpdateFacilityResultTable?
-    public var stepperValue = 1
-    
+    var updateDelegate: UpdateFacilityResultTable?
+    var stepperValue = 1
     
     public var stepperStack: UIStackView = {
         let stack = UIStackView()
@@ -76,7 +75,7 @@ class FacilityResultTable: UIViewController {
     }()
     
     public var textStack: UIStackView = {
-       let stack = UIStackView()
+        let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.alignment = .center
@@ -115,7 +114,7 @@ class FacilityResultTable: UIViewController {
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         return view
     }()
-
+    
     private lazy var closedTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Facility"
@@ -124,7 +123,7 @@ class FacilityResultTable: UIViewController {
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var openTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Facility"
@@ -135,7 +134,7 @@ class FacilityResultTable: UIViewController {
         label.transform = CGAffineTransform(scaleX: 0.65, y: 0.65).concatenating(CGAffineTransform(translationX: 0, y: -15))
         return label
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         popupView.backgroundColor = #colorLiteral(red: 1, green: 0.8352941176, blue: 0.4941176471, alpha: 1)
@@ -145,10 +144,9 @@ class FacilityResultTable: UIViewController {
         tableView.reloadData()
         popupView.addGestureRecognizer(panRecognizer)
     }
-
-
+    
     private var bottomConstraint = NSLayoutConstraint()
-
+    
     private func configureHeader() {
         popupView.addSubview(textStack)
         popupView.addSubview(stepperStack)
@@ -234,7 +232,6 @@ class FacilityResultTable: UIViewController {
     }
     
     private func layout() {
-        
         view.addSubview(popupView)
         popupView.translatesAutoresizingMaskIntoConstraints = false
         popupView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -242,36 +239,36 @@ class FacilityResultTable: UIViewController {
         bottomConstraint = popupView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: popupOffset)
         bottomConstraint.isActive = true
         popupView.heightAnchor.constraint(equalToConstant: 750).isActive = true
-
+        
         popupView.addSubview(closedTitleLabel)
         closedTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         closedTitleLabel.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         closedTitleLabel.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
         closedTitleLabel.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 20).isActive = true
-
+        
         popupView.addSubview(openTitleLabel)
         openTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         openTitleLabel.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         openTitleLabel.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
         openTitleLabel.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 30).isActive = true
     }
-
+    
     private var currentState: State = .closed
-
+    
     private var runningAnimators = [UIViewPropertyAnimator]()
-
+    
     private var animationProgress = [CGFloat]()
-
+    
     private lazy var panRecognizer: UIPanGestureRecognizer = {
         let recognizer = UIPanGestureRecognizer()
         recognizer.addTarget(self, action: #selector(popupViewPanned(recognizer:)))
         return recognizer
     }()
-
+    
     private func animateTransitionIfNeeded(to state: State, duration: TimeInterval) {
-
+        
         guard runningAnimators.isEmpty else {return}
-
+        
         let transitionAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
             switch state {
             case .open:
@@ -281,13 +278,13 @@ class FacilityResultTable: UIViewController {
                 self.openTitleLabel.transform = .identity
             case .closed:
                 self.bottomConstraint.constant = self.popupOffset
-                self.popupView.layer.cornerRadius = 0
+                self.popupView.layer.cornerRadius = 10
                 self.closedTitleLabel.transform = .identity
                 self.openTitleLabel.transform = CGAffineTransform(scaleX: 0.65, y: 0.65).concatenating(CGAffineTransform(translationX: 0, y: -15))
             }
             self.view.layoutIfNeeded()
         }
-
+        
         transitionAnimator.addCompletion { (position) in
             switch position {
             case .start:
@@ -299,7 +296,7 @@ class FacilityResultTable: UIViewController {
             @unknown default:
                 fatalError()
             }
-
+            
             switch self.currentState {
             case .open:
                 self.bottomConstraint.constant = 0
@@ -308,7 +305,7 @@ class FacilityResultTable: UIViewController {
             }
             self.runningAnimators.removeAll()
         }
-
+        
         let inTitleAnimator = UIViewPropertyAnimator(duration: duration, curve: .easeIn) {
             switch state {
             case .open:
@@ -318,7 +315,7 @@ class FacilityResultTable: UIViewController {
             }
         }
         inTitleAnimator.scrubsLinearly = false
-
+        
         let outTitleAnimator = UIViewPropertyAnimator(duration: duration, curve: .easeOut) {
             switch state {
             case .open:
@@ -328,17 +325,16 @@ class FacilityResultTable: UIViewController {
             }
         }
         outTitleAnimator.scrubsLinearly = false
-
+        
         transitionAnimator.startAnimation()
         inTitleAnimator.startAnimation()
         outTitleAnimator.startAnimation()
-
+        
         runningAnimators.append(transitionAnimator)
         runningAnimators.append(inTitleAnimator)
         runningAnimators.append(outTitleAnimator)
-
     }
-
+    
     @objc private func popupViewPanned(recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
@@ -348,7 +344,7 @@ class FacilityResultTable: UIViewController {
         case .changed:
             let translation = recognizer.translation(in: popupView)
             var fraction = -translation.y / popupOffset
-
+            
             if currentState == .open { fraction *= -1 }
             if runningAnimators[0].isReversed { fraction *= -1 }
             for (index, animator) in runningAnimators.enumerated() {
@@ -357,7 +353,7 @@ class FacilityResultTable: UIViewController {
         case .ended:
             let yVelocity = recognizer.velocity(in: popupView).y
             let shouldClose = yVelocity > 0
-
+            
             if yVelocity == 0 {
                 runningAnimators.forEach {$0.continueAnimation(withTimingParameters: nil, durationFactor: 0)}
                 break

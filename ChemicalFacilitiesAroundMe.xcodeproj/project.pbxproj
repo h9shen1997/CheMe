@@ -11,6 +11,7 @@
 		555A7D6125358614003186E1 /* Facility.csv in Resources */ = {isa = PBXBuildFile; fileRef = 555A7D6025358614003186E1 /* Facility.csv */; };
 		555A7D64253593AB003186E1 /* FacilityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A7D63253593AB003186E1 /* FacilityModel.swift */; };
 		555A7D67253593EA003186E1 /* FacilityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A7D66253593EA003186E1 /* FacilityData.swift */; };
+		55637099255CBAD20030E87C /* GitIgnoreFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55637098255CBAD20030E87C /* GitIgnoreFile.swift */; };
 		556C740F252EC54800932F9B /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556C740E252EC54800932F9B /* SubtitleTableViewCell.swift */; };
 		55975D63252A64E200215657 /* ChemFacilityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55975D62252A64E200215657 /* ChemFacilityConstants.swift */; };
 		55C09FA3252FD572001F49EB /* MenuPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C09FA2252FD572001F49EB /* MenuPanelController.swift */; };
@@ -53,6 +54,7 @@
 		555A7D6025358614003186E1 /* Facility.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Facility.csv; sourceTree = "<group>"; };
 		555A7D63253593AB003186E1 /* FacilityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityModel.swift; sourceTree = "<group>"; };
 		555A7D66253593EA003186E1 /* FacilityData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityData.swift; sourceTree = "<group>"; };
+		55637098255CBAD20030E87C /* GitIgnoreFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitIgnoreFile.swift; sourceTree = "<group>"; };
 		556C740E252EC54800932F9B /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		55975D62252A64E200215657 /* ChemFacilityConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChemFacilityConstants.swift; sourceTree = "<group>"; };
 		55C09FA2252FD572001F49EB /* MenuPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPanelController.swift; sourceTree = "<group>"; };
@@ -162,13 +164,14 @@
 			children = (
 				55F5450C25227C7500F876C3 /* AppDelegate.swift */,
 				55F5450E25227C7500F876C3 /* SceneDelegate.swift */,
-				555A7D6025358614003186E1 /* Facility.csv */,
 				55C09FC025307352001F49EB /* Utility */,
 				55C1BB2825286A400056DA19 /* Model */,
 				55C1BB3025286AB20056DA19 /* View */,
 				55C1BB2E25286A720056DA19 /* Controller */,
 				55F5451825227C7900F876C3 /* Assets.xcassets */,
 				55F5451D25227C7900F876C3 /* Info.plist */,
+				555A7D6025358614003186E1 /* Facility.csv */,
+				55637098255CBAD20030E87C /* GitIgnoreFile.swift */,
 			);
 			path = ChemicalFacilitiesAroundMe;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				55975D63252A64E200215657 /* ChemFacilityConstants.swift in Sources */,
 				556C740F252EC54800932F9B /* SubtitleTableViewCell.swift in Sources */,
 				55F545262522839700F876C3 /* LocationSearchTable.swift in Sources */,
+				55637099255CBAD20030E87C /* GitIgnoreFile.swift in Sources */,
 				55C09FC325314661001F49EB /* InstantPanGestureRecognizer.swift in Sources */,
 				55F5451725227C7500F876C3 /* ChemicalFacilitiesAroundMe.xcdatamodeld in Sources */,
 				55C09FC625314669001F49EB /* FacilityResultTable.swift in Sources */,

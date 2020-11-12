@@ -17,7 +17,7 @@ class MenuPanelController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0.8549019608, blue: 0.7176470588, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.7725490196, blue: 0.7098039216, alpha: 1)
         configureMenuLabel()
         configureTableView()
     }
@@ -27,8 +27,8 @@ class MenuPanelController: UIViewController {
         menuLabel.textAlignment = .center
         menuLabel.text = "Menu"
         menuLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-        menuLabel.textColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
-        menuLabel.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0.8549019608, blue: 0.7176470588, alpha: 1)
+        menuLabel.textColor = .black
+        menuLabel.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.7725490196, blue: 0.7098039216, alpha: 1)
         
         view.addSubview(menuLabel)
         menuLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class MenuPanelController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .singleLine
-        tableView.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0.8549019608, blue: 0.7176470588, alpha: 1)
+        tableView.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.7725490196, blue: 0.7098039216, alpha: 1)
         tableView.rowHeight = 70
         
         view.addSubview(tableView)
@@ -54,7 +54,7 @@ class MenuPanelController: UIViewController {
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 85).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         let footer = UIView()
-        footer.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0.8549019608, blue: 0.7176470588, alpha: 1)
+        footer.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.7725490196, blue: 0.7098039216, alpha: 1)
         tableView.tableFooterView = footer
         
         let px = 1 / UIScreen.main.scale
@@ -69,7 +69,7 @@ extension MenuPanelController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! MenuOptionCell
         let menuOption = MenuOption(rawValue: indexPath.row)
@@ -82,10 +82,8 @@ extension MenuPanelController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("this line is run")
         let menuOption = MenuOption(rawValue: indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
         delegate?.toggleMenuPanel(forMenuOption: menuOption)
     }
-
 }

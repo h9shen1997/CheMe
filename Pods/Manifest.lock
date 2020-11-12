@@ -1,0 +1,28 @@
+PODS:
+  - BulletinBoard (5.0.0)
+  - GoogleMaps/Base (3.10.0)
+  - GooglePlaces (3.10.0):
+    - GoogleMaps/Base (= 3.10.0)
+  - IQKeyboardManager (6.5.6)
+
+DEPENDENCIES:
+  - BulletinBoard
+  - GooglePlaces
+  - IQKeyboardManager
+
+SPEC REPOS:
+  trunk:
+    - BulletinBoard
+    - GoogleMaps
+    - GooglePlaces
+    - IQKeyboardManager
+
+SPEC CHECKSUMS:
+  BulletinBoard: dba77053c2a7b64953f63073f7534165af2edd21
+  GoogleMaps: 8c080862ff2748ece9929471b30feb56a6c5079d
+  GooglePlaces: 9a6f5f3a0c88da2aa1bf7426a65d3e004f5e69a1
+  IQKeyboardManager: 2a6e97afdafc7becf0cb17a9a8d795e3a980717f
+
+PODFILE CHECKSUM: f22143bb1ee41f7a4b241c7bbba044ea21132fea
+
+COCOAPODS: 1.10.0

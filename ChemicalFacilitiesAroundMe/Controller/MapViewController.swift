@@ -22,9 +22,8 @@ protocol UpdateFacilityResultTable {
 }
 
 class MapViewController: UIViewController {
-
-    private let reuseIdentifier = "facilityResultCell"
     
+    private let reuseIdentifier = "facilityResultCell"
     private var locationManager: CLLocationManager!
     private var currentLocation: CLLocation?
     private var resultSearchController: UISearchController?
@@ -39,13 +38,11 @@ class MapViewController: UIViewController {
     private var shouldAllowStepper = true
     private var mapView = MKMapView()
     private var compassVStack = UIStackView()
-
     
     var updateDelegate: UpdateFacilityResultTable!
     var menuDelegate: MapViewControllerDelegate?
     var facilityResultController: FacilityResultTable!
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -104,7 +101,7 @@ class MapViewController: UIViewController {
         myLocationButton.heightAnchor.constraint(equalToConstant: 42).isActive = true
         myLocationButton.widthAnchor.constraint(equalToConstant: 42).isActive = true
         myLocationButton.setImage(largeLocationButton, for: .normal)
-        myLocationButton.tintColor = #colorLiteral(red: 0.02745098039, green: 0.4078431373, blue: 0.6235294118, alpha: 1)
+        myLocationButton.tintColor = #colorLiteral(red: 0.05490196078, green: 0.568627451, blue: 0.5490196078, alpha: 1)
         myLocationButton.addTarget(self, action: #selector(myLocationButtonPressed), for: .touchUpInside)
         
         // Create a compass at customized location
@@ -120,18 +117,17 @@ class MapViewController: UIViewController {
     }
     
     func configureNavigationBar() {
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.7882352941, blue: 0.2352941176, alpha: 1)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.6509803922, blue: 0.168627451, alpha: 1)
         navigationController?.navigationBar.barStyle = .default
         navigationItem.title = "Chemical Facility Around Me"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "text.justify"), style: .plain, target: self, action: #selector(menuPressed(_:)))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "filemenu.and.cursorarrow"), style: .plain, target: self, action: #selector(menuPressed(_:)))
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)]
         navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshPressed(_:)))
         navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
     }
-    
-
 }
+
 //MARK: - UI Methods Arrangement
 extension MapViewController {
     @objc func myLocationButtonPressed() {
@@ -167,7 +163,7 @@ extension MapViewController {
         }
     }
     
-   // Calculate Facility Related Information
+    // Calculate Facility Related Information
     func calculateLocationDistance(with placemark: MKPlacemark) {
         let selectedLocation = CLLocation(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
         distanceList.removeAll()
@@ -230,7 +226,7 @@ extension MapViewController: CLLocationManagerDelegate {
             fatalError()
         }
     }
-
+    
     // Handle location manager errors.
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         locationManager.stopUpdatingLocation()

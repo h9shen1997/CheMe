@@ -8,22 +8,22 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
-
+    
     var menuPanelController: MenuPanelController!
     var mapViewController: MapViewController!
     var resultTableController: FacilityResultTable!
     var centerController: UIViewController!
     var isExpanded = false
     
-    let centerPanelExpandedOffset: CGFloat = 165
+    let centerPanelExpandedOffset: CGFloat = 200
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureMapViewController()
         configureMenuPanelController()
-//        let panGesturerecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-//        centerController.view.addGestureRecognizer(panGesturerecognizer)
+        //        let panGesturerecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        //        centerController.view.addGestureRecognizer(panGesturerecognizer)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

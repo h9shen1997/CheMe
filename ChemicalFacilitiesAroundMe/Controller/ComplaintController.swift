@@ -62,7 +62,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         describeText.isUserInteractionEnabled = true
         describeText.textColor = .lightGray
         describeText.backgroundColor = .white
-        describeText.font = UIFont.systemFont(ofSize: 14)
+        describeText.font = UIFont.systemFont(ofSize: 12)
         describeText.text = textViewPlaceholder
         describeText.backgroundColor = .white
         describeText.layer.cornerRadius = 10
@@ -85,7 +85,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         name.textAlignment = .center
         name.backgroundColor = .white
         name.layer.cornerRadius = 10
-        name.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        name.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         name.autocapitalizationType = .words
         name.heightAnchor.constraint(equalToConstant: 40).isActive = true
         name.widthAnchor.constraint(equalToConstant: 200).isActive = true
@@ -107,7 +107,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         text.translatesAutoresizingMaskIntoConstraints = false
         text.textColor = .black
         text.backgroundColor = .white
-        text.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        text.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         text.autocapitalizationType = .none
         text.textAlignment = .center
         text.layer.cornerRadius = 10
@@ -162,9 +162,9 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.title = "Complaint"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)]
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "delete.left"), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrowshape.turn.up.backward"), style: .plain, target: self, action: #selector(handleDismiss))
         navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleCamera))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "camera.badge.ellipsis"), style: .plain, target: self, action: #selector(handleCamera))
         navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
     }
     
@@ -182,7 +182,7 @@ class ComplaintController: UIViewController, UINavigationControllerDelegate {
                 self.submitButton.alpha = 1
             }
         }
-
+        
         if mainImage.image == nil || otherImage.image == nil || describeText.text == textViewPlaceholder || nameText.text == nil || numberText.text == nil {
             let alert = UIAlertController(title: "Warning", message: "All Fields Need to Be Completed for a Valid Complaint", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))

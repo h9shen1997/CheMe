@@ -8,6 +8,7 @@
 import UIKit
 import GooglePlaces
 import SafariServices
+import BLTNBoard
 
 class FacilityController: UIViewController {
     
@@ -29,10 +30,8 @@ class FacilityController: UIViewController {
     var webButton: UIButton!
     var url: URL?
     var contactNumber: String?
-    
-    
     var lblText: UITextView!
-    let placeURL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=AIzaSyDltyRQPHZu7R-K86F65vj-N1YaW7p3YB8&&inputtype=textquery&fields=formatted_address,name,place_id&input="
+    let placeURL = GitIgnoreFile.placeAPI
     let locationBiasURL = "&locationbias=circle:1000@"
     var facility: FacilityModel?
     
@@ -103,7 +102,7 @@ class FacilityController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.title = "Facility Information"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)]
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "delete.left"), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrowshape.turn.up.backward"), style: .plain, target: self, action: #selector(handleDismiss))
         navigationItem.leftBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "phone.circle"), style: .plain, target: self, action: #selector(handleContact))
         navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2235294118, green: 0.231372549, blue: 0.2666666667, alpha: 1)
@@ -194,7 +193,7 @@ class FacilityController: UIViewController {
         stackall.distribution = .fill
         stackall.translatesAutoresizingMaskIntoConstraints = false
         stackall.topAnchor.constraint(equalTo: view.topAnchor, constant: 380).isActive = true
-
+        
         stackone.alignment = .center
         stackone.spacing = 5
         stackone.axis = .vertical
@@ -372,6 +371,25 @@ class FacilityController: UIViewController {
                 self.learnButton.alpha = 1
             }
         }
+        let page = BLTNPageItem(title: "Classification")
+        switch classification.text {
+        case "Title V":
+            page.descriptionText = "Title V applies to any major source that has actual or potential emissions that meet or exceed the major source threshold for any criteria pollutant (100 tons/year, 10 tons/year for a single HAP or 25 tons/year for any combination of HAP).  Lower thresholds apply in non-attainment areas (but only for the pollutant that is in non-attainment)."
+            break
+        case "Synthetic Minor":
+            page.descriptionText = "A Synthetic Minor permit imposes practically enforceable limits to restrict a facility’s potential emissions to below major source thresholds. This option makes it possible for those facilities that can comply with the Synthetic Minor permit’s practically enforceable limits to operate without the need for a Title V permit."
+            break
+        case "Minor":
+            page.descriptionText = "Minor source means even without add-on controls, the facility is not possible to emit air pollutants above the major threshold. Some minor sources that are subject to MACT/GACT standards are also required to obtain a Title V Permit."
+            break
+        case "Permit By Rule":
+            page.descriptionText = "A Permit-by-Rule establishes pre-determined operational limitations for certain industrial categories for the purposes of ensuring that a facility will not be considered a major source with respect to Title V of the Clean Air Act Amendments of 1990. A SIP construction/operating permit is still required."
+            break
+        default:
+            break
+        }
+        let bulletinManager = BLTNItemManager(rootItem: page)
+        bulletinManager.showBulletin(above: self)
     }
     
     @objc func webButtonPressed() {
@@ -537,7 +555,7 @@ class FacilityController: UIViewController {
 }
 
 extension UITextView {
-
+    
     func centerVerticalText() {
         self.textAlignment = .center
         let fitSize = CGSize(width: bounds.width, height: CGFloat.greatestFiniteMagnitude)

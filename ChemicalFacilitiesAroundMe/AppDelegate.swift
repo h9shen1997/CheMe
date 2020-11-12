@@ -17,19 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
         IQKeyboardManager.shared().isEnableAutoToolbar = false
-        GMSPlacesClient.provideAPIKey("AIzaSyDltyRQPHZu7R-K86F65vj-N1YaW7p3YB8")
+        GMSPlacesClient.provideAPIKey(GitIgnoreFile.googleAuth)
         
         return true
     }
-
+    
     // MARK: UISceneSession Lifecycle
-
+    
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
@@ -37,14 +37,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: - Core Data stack
-
+    
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
-        */
+         */
         let container = NSPersistentContainer(name: "ChemicalFacilitiesAroundMe")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -96,26 +96,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func processData(contentsOfURL: URL, encoding: String.Encoding) -> [(facilityName: String, address: String, city: String, zipCode: String, latitude: Double, longitude: Double, classification: String, facilityDescription: String)]? {
         
-            let delimiter = ","
-            var items = [(facilityName: String, address: String, city: String, zipCode: String, latitude: Double, longitude: Double, classification: String, facilityDescription: String)]()
-            do {
-                removeData()
-                let content = try String(contentsOf: contentsOfURL, encoding: encoding)
-                let lines = content.components(separatedBy: "\n")
-                for line in lines {
-                    var values = [String]()
-                    if line != "" {
-                        values = line.components(separatedBy: delimiter)
-                        let item = (facilityName: values[0], address: values[1], city: values[2], zipCode: values[3], latitude: Double(values[4])!, longitude: Double(values[5])!, classification: values[6], facilityDescription: values[7])
-                        items.append(item)
-                    }
+        let delimiter = ","
+        var items = [(facilityName: String, address: String, city: String, zipCode: String, latitude: Double, longitude: Double, classification: String, facilityDescription: String)]()
+        do {
+            removeData()
+            let content = try String(contentsOf: contentsOfURL, encoding: encoding)
+            let lines = content.components(separatedBy: "\n")
+            for line in lines {
+                var values = [String]()
+                if line != "" {
+                    values = line.components(separatedBy: delimiter)
+                    let item = (facilityName: values[0], address: values[1], city: values[2], zipCode: values[3], latitude: Double(values[4])!, longitude: Double(values[5])!, classification: values[6], facilityDescription: values[7])
+                    items.append(item)
                 }
-            } catch {
-                fatalError("Failed to remove the data and preload the data, \(error.localizedDescription)")
             }
-            return items
+        } catch {
+            fatalError("Failed to remove the data and preload the data, \(error.localizedDescription)")
         }
-
+        return items
+    }
+    
     // MARK: - Core Data Saving support
     func saveContext () {
         let context = persistentContainer.viewContext
@@ -129,4 +129,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
-
